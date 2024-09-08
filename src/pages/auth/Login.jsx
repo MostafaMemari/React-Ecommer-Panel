@@ -1,27 +1,39 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import AuthLayout from './AuthLayout';
 import { Formik, Form } from 'formik';
 import { loginValidationSchema } from '../../schemas/loginValidation';
 import FormikControl from '../../components/Form/FormikControl';
-import axios from 'axios';
 import Cookies from 'js-cookie';
+import { loginService } from '../../services/Axios/Request/auth';
+import { useIsLogin } from '../../hooks/authHook';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
+
+const handleLogin = async (values, submitMethods, navigate) => {
+  try {
+    const res = await loginService(values);
+    if (res.status == 200) {
+      const { accessToken } = res.data;
+      Cookies.set('access_token', accessToken, { expires: 7 });
+      window.location.reload();
+      // navigate('/');
+    } else {
+      alert('متاسفم');
+    }
+    submitMethods.setSubmitting(false);
+  } catch (error) {
+    submitMethods.setSubmitting(false);
+    console.error('Error during registration:', error.message);
+  }
+};
 
 function Login() {
   const navigate = useNavigate();
 
-  const handleRegister = async (values) => {
-    try {
-      const response = await axios.post('http://localhost:3005/api/v1/auth/login', { ...values });
+  const [loading, isLogin] = useIsLogin();
 
-      const { accessToken } = response.data;
-      Cookies.set('accessToken', accessToken, { expires: 7 });
-
-      navigate('/');
-    } catch (error) {
-      console.error('Error during registration:', error.message);
-    }
-  };
-  return (
+  return loading ? (
+    <LoadingSpinner />
+  ) : !isLogin ? (
     <AuthLayout title="مانده تا ساخت اکانتتان">
       <h2 className="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-right">ورود</h2>
       <div className="intro-x mt-2 text-gray-500 xl:hidden text-center">
@@ -33,7 +45,7 @@ function Login() {
           password: '',
         }}
         validationSchema={loginValidationSchema}
-        onSubmit={handleRegister}
+        onSubmit={(values, submitMethods) => handleLogin(values, submitMethods, navigate)}
       >
         <Form>
           <FormikControl control="input" name="identifier" type="text" placeholder="ایمیل یا نام کاربری" />
@@ -72,6 +84,8 @@ function Login() {
         </a>
       </div>
     </AuthLayout>
+  ) : (
+    <Navigate to="/" />
   );
 }
 

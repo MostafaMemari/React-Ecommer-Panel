@@ -9,7 +9,7 @@ const MobileMenu = () => {
         <a href="" className="flex ml-auto">
           <img alt="Tinker Tailwind HTML Admin Template" className="w-6" src="/images/logo.svg" />
         </a>
-        <a href="javascript:;" id="mobile-menu-toggler">
+        <a href="#;" id="mobile-menu-toggler">
           {' '}
           <i
             data-feather="bar-chart-2"

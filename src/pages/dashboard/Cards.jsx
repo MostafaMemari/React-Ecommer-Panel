@@ -38,14 +38,13 @@ function Cards() {
     <div className="col-span-12 mt-8">
       <div className="intro-y flex items-center h-10">
         <h2 className="text-lg font-medium truncate ml-5">گزارش کلی</h2>
-        <a href="" className="mr-auto flex items-center text-theme-30 dark:text-theme-25">
-          {' '}
+        <a href="#" className="mr-auto flex items-center text-theme-30 dark:text-theme-25">
           <i data-feather="refresh-ccw" className="w-4 h-4 ml-3"></i>به روزرسانی داده
         </a>
       </div>
       <div className="grid grid-cols-12 gap-6 mt-5">
-        {cardObjects.map((card) => (
-          <Card {...card} />
+        {cardObjects.map(({ key, ...cardProps }) => (
+          <Card key={key} {...cardProps} />
         ))}
       </div>
     </div>

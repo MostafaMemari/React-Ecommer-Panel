@@ -113,10 +113,10 @@ import cash from 'cash-dom';
           download: false,
           formatter(cell, formatterParams) {
             let a = cash(`<div class="flex lg:justify-center items-center">
-                            <a class="edit flex items-center mr-3" href="javascript:;">
+                            <a class="edit flex items-center mr-3" href="#;">
                                 <i data-feather="check-square" class="w-4 h-4 mr-1"></i> Edit
                             </a>
-                            <a class="delete flex items-center text-theme-21" href="javascript:;">
+                            <a class="delete flex items-center text-theme-21" href="#;">
                                 <i data-feather="trash-2" class="w-4 h-4 mr-1"></i> Delete
                             </a>
                         </div>`);

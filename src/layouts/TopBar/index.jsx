@@ -152,7 +152,7 @@ function index() {
               </div>
               <div className="mr-2 overflow-hidden">
                 <div className="flex items-center">
-                  <a href="javascript:;" className="font-medium truncate ml-5">
+                  <a href="#;" className="font-medium truncate ml-5">
                     ارنولد شوایتزگر
                   </a>
                   <div className="text-xs text-gray-500 mr-auto whitespace-nowrap">01:10 صبح</div>
@@ -169,7 +169,7 @@ function index() {
               </div>
               <div className="mr-2 overflow-hidden">
                 <div className="flex items-center">
-                  <a href="javascript:;" className="font-medium truncate ml-5">
+                  <a href="#;" className="font-medium truncate ml-5">
                     کوین اسپیسی
                   </a>
                   <div className="text-xs text-gray-500 mr-auto whitespace-nowrap">05:09 عصر</div>
@@ -186,7 +186,7 @@ function index() {
               </div>
               <div className="mr-2 overflow-hidden">
                 <div className="flex items-center">
-                  <a href="javascript:;" className="font-medium truncate ml-5">
+                  <a href="#;" className="font-medium truncate ml-5">
                     {' '}
                     مورگان فریمن{' '}
                   </a>
@@ -204,7 +204,7 @@ function index() {
               </div>
               <div className="mr-2 overflow-hidden">
                 <div className="flex items-center">
-                  <a href="javascript:;" className="font-medium truncate ml-5">
+                  <a href="#;" className="font-medium truncate ml-5">
                     {' '}
                     کوین اسپیسی{' '}
                   </a>
@@ -222,7 +222,7 @@ function index() {
               </div>
               <div className="mr-2 overflow-hidden">
                 <div className="flex items-center">
-                  <a href="javascript:;" className="font-medium truncate ml-5">
+                  <a href="#;" className="font-medium truncate ml-5">
                     راسل کرو
                   </a>
                   <div className="text-xs text-gray-500 mr-auto whitespace-nowrap">01:10 صبح</div>

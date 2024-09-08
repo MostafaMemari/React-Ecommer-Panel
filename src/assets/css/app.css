@@ -15087,7 +15087,7 @@ html body {
   font-weight: 500;
 }
 
-.source-preview code.javascript:before {
+.source-preview code.#before {
   content: 'JS';
 }
 
