@@ -243,7 +243,7 @@ function index() {
           role="button"
           aria-expanded="false"
         >
-          <img alt="Tinker Tailwind HTML Admin Template" src="/images/profile-7.jpg" />
+          <img alt="Tinker Tailwind HTML Admin Template" src="/images/profile-8.jpg" />
         </div>
         <div className="dropdown-menu w-56">
           <div className="dropdown-menu__content box dark:bg-dark-6">

@@ -1,6 +1,7 @@
 {
   "menu": [
     { "title": "داشبورد", "icon": "home", "link": "/" },
+    { "title": "محصولات", "icon": "shopping-cart", "link": "/products" },
     {
       "title": "صفحات",
       "icon": "layout",

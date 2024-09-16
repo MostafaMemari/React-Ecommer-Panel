@@ -6,6 +6,7 @@ import SideMenuContent from '../layouts/SideMenu/SideMenuContent';
 
 import PrivateRoute from './PrivateRoute';
 import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
+import Porducts from '../pages/products/Porducts';
 
 function Router({ loading, isLogin }) {
   const routes = useRoutes([
@@ -20,6 +21,10 @@ function Router({ loading, isLogin }) {
         {
           path: '/',
           element: <Dashboard />,
+        },
+        {
+          path: '/products',
+          element: <Porducts />,
         },
         {
           path: '/page-1',
