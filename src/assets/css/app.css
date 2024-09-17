@@ -1,8 +1,5 @@
 @charset "UTF-8";
 
-/*! tailwindcss v2.1.2 | MIT License | https://tailwindcss.com*/
-/*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
-
 @import './_tailwind.css';
 @import './_roboto.css';
 @import './_iranYekan.css';

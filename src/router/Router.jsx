@@ -1,12 +1,12 @@
 import { useRoutes } from 'react-router-dom';
 
 import Dashboard from '../pages/dashboard/Dashboard';
-import Page1 from '../pages/Page1';
 import SideMenuContent from '../layouts/SideMenu/SideMenuContent';
 
 import PrivateRoute from './PrivateRoute';
 import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
-import Porducts from '../pages/products/Porducts';
+import ManageProduct from '../pages/ManageProduct/ManageProduct';
+import BuyProduct from '../pages/BuyProduct/BuyProduct';
 
 function Router({ loading, isLogin }) {
   const routes = useRoutes([
@@ -24,11 +24,11 @@ function Router({ loading, isLogin }) {
         },
         {
           path: '/products',
-          element: <Porducts />,
+          element: <ManageProduct />,
         },
         {
-          path: '/page-1',
-          element: <Page1 />,
+          path: '/buy-product',
+          element: <BuyProduct />,
         },
       ],
     },

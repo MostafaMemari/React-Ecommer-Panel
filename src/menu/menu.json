@@ -1,7 +1,14 @@
 {
   "menu": [
     { "title": "داشبورد", "icon": "home", "link": "/" },
-    { "title": "محصولات", "icon": "shopping-cart", "link": "/products" },
+    {
+      "title": "محصولات",
+      "icon": "shopping-cart",
+      "subMenu": [
+        { "title": "مدیریت", "icon": "home", "link": "/products" },
+        { "title": "خرید", "icon": "home", "link": "/buy-product" }
+      ]
+    },
     {
       "title": "صفحات",
       "icon": "layout",
@@ -10,52 +17,52 @@
           "title": "ویزارد",
           "icon": "activity",
           "subMenu": [
-            { "title": "چینش 1", "icon": "zap", "link": "side-menu-light-wizard-layout-1.html" },
-            { "title": "چینش 2", "icon": "zap", "link": "side-menu-light-wizard-layout-2.html" },
-            { "title": "چینش 3", "icon": "zap", "link": "side-menu-light-wizard-layout-3.html" }
+            { "title": "چینش 1", "icon": "zap", "link": "#" },
+            { "title": "چینش 2", "icon": "zap", "link": "#" },
+            { "title": "چینش 3", "icon": "zap", "link": "#" }
           ]
         },
         {
           "title": "بلاگ",
           "icon": "activity",
           "subMenu": [
-            { "title": "چینش 1", "icon": "zap", "link": "side-menu-light-blog-layout-1.html" },
-            { "title": "چینش 2", "icon": "zap", "link": "side-menu-light-blog-layout-2.html" },
-            { "title": "چینش 3", "icon": "zap", "link": "side-menu-light-blog-layout-3.html" }
+            { "title": "چینش 1", "icon": "zap", "link": "#" },
+            { "title": "چینش 2", "icon": "zap", "link": "#" },
+            { "title": "چینش 3", "icon": "zap", "link": "#" }
           ]
         },
         {
           "title": "قیمت‌گذاری",
           "icon": "activity",
           "subMenu": [
-            { "title": "چینش 1", "icon": "zap", "link": "side-menu-light-pricing-layout-1.html" },
-            { "title": "چینش 2", "icon": "zap", "link": "side-menu-light-pricing-layout-2.html" }
+            { "title": "چینش 1", "icon": "zap", "link": "#" },
+            { "title": "چینش 2", "icon": "zap", "link": "#" }
           ]
         },
         {
           "title": "فاکتور",
           "icon": "activity",
           "subMenu": [
-            { "title": "چینش 1", "icon": "zap", "link": "side-menu-light-invoice-layout-1.html" },
-            { "title": "چینش 2", "icon": "zap", "link": "side-menu-light-invoice-layout-2.html" }
+            { "title": "چینش 1", "icon": "zap", "link": "#" },
+            { "title": "چینش 2", "icon": "zap", "link": "#" }
           ]
         },
         {
           "title": "پرسش و پاسخ",
           "icon": "activity",
           "subMenu": [
-            { "title": "چینش 1", "icon": "zap", "link": "side-menu-light-faq-layout-1.html" },
-            { "title": "چینش 2", "icon": "zap", "link": "side-menu-light-faq-layout-2.html" },
-            { "title": "چینش 3", "icon": "zap", "link": "side-menu-light-faq-layout-3.html" }
+            { "title": "چینش 1", "icon": "zap", "link": "#" },
+            { "title": "چینش 2", "icon": "zap", "link": "#" },
+            { "title": "چینش 3", "icon": "zap", "link": "#" }
           ]
         },
-        { "title": "ورود", "icon": "activity", "link": "login-light-login.html" },
-        { "title": "ثبت نام", "icon": "activity", "link": "login-light-register.html" },
-        { "title": "صفحه خطا", "icon": "activity", "link": "main-light-error-page.html" },
-        { "title": "بروزرسانی پروفایل", "icon": "activity", "link": "side-menu-light-update-profile.html" },
-        { "title": "تغییر رمزعبور", "icon": "activity", "link": "side-menu-light-change-password.html" }
+        { "title": "ورود", "icon": "activity", "link": "#" },
+        { "title": "ثبت نام", "icon": "activity", "link": "#" },
+        { "title": "صفحه خطا", "icon": "activity", "link": "#" },
+        { "title": "بروزرسانی پروفایل", "icon": "activity", "link": "#" },
+        { "title": "تغییر رمزعبور", "icon": "activity", "link": "#" }
       ]
     },
-    { "title": "زیر منو تکی", "icon": "zap", "link": "side-menu-light-blog-layout-3.html" }
+    { "title": "زیر منو تکی", "icon": "zap", "link": "#" }
   ]
 }

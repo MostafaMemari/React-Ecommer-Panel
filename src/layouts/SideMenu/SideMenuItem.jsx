@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import FeatherIcon from '../../components/FeatherIcon/FeatherIcon';
 
 const SideMenuItem = ({ item }) => {
@@ -11,6 +11,14 @@ const SideMenuItem = ({ item }) => {
 
   const hasSubMenu = item.subMenu && item.subMenu.length > 0;
 
+  useEffect(() => {
+    if (isActive && hasSubMenu) {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false);
+    }
+  }, [location.pathname, isActive, hasSubMenu]);
+
   const toggleSubMenu = (e) => {
     e.preventDefault();
     setIsOpen(!isOpen);
@@ -20,7 +28,7 @@ const SideMenuItem = ({ item }) => {
     <li>
       <Link
         to={item.link || '#'}
-        className={`side-menu ${isActive ? 'side-menu--active' : ''}`}
+        className={`side-menu ${isActive ? 'side-menu--active side-menu--open' : ''}`}
         onClick={hasSubMenu ? toggleSubMenu : null}
       >
         <div className="side-menu__icon">
