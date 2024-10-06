@@ -1,0 +1,35 @@
+/* adding persian font */
+
+/*  */
+@font-face {
+  font-family: IRANYekan-B;
+  font-style: normal;
+  font-weight: 600;
+  src: url(../fonts/iranYekan/iranyekanwebbold.eot);
+  src: url(../fonts/iranYekan/iranyekanwebbold.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/iranYekan/iranyekanwebbold.woff2) format('woff2'),
+    url(../fonts/iranYekan/iranyekanwebbold.woff) format('woff'),
+    url(../fonts/iranYekan/iranyekanwebbold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: IRANYekan-L;
+  font-style: normal;
+  font-weight: 300;
+  src: url(../fonts/iranYekan/iranyekanweblight.eot);
+  src: url(../fonts/iranYekan/iranyekanweblight.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/iranYekan/iranyekanweblight.woff2) format('woff2'),
+    url(../fonts/iranYekan/iranyekanweblight.woff) format('woff'),
+    url(../fonts/iranYekan/iranyekanweblight.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: IRANYekan;
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/iranYekan/iranyekanwebregular.eot);
+  src: url(../fonts/iranYekan/iranyekanwebregular.eot?#iefix) format('embedded-opentype'),
+    /* url(../fonts/iranYekan/iranyekanwebregular.woff2) format('woff2'), */
+      url(../fonts/iranYekan/iranyekanwebregular.woff) format('woff'),
+    url(../fonts/iranYekan/iranyekanwebregular.ttf) format('truetype');
+}
