@@ -1,14 +1,18 @@
-import ProductRow from "./ProductRow";
+import ProductRow from './ProductRow';
 
 function ProductTable({ products }) {
   return (
     <table className="table table-report -mt-2">
       <thead>
         <tr>
-          <th className="whitespace-nowrap">تصاویر</th>
+          <th className="">تصاویر</th>
           <th className="whitespace-nowrap">نام محصول</th>
-          <th className="text-center whitespace-nowrap">تعداد</th>
-          <th className="text-center whitespace-nowrap">وضعیت</th>
+          <th className="text-center whitespace-nowrap">ربات</th>
+          <th className="text-center whitespace-nowrap">بای باکس</th>
+          <th className="text-center whitespace-nowrap">چک قیمت</th>
+          <th className="text-center whitespace-nowrap">کاهش</th>
+          <th className="text-center whitespace-nowrap">کمترین</th>
+          <th className="text-center whitespace-nowrap"></th>
         </tr>
       </thead>
       <tbody>
@@ -16,7 +20,7 @@ function ProductTable({ products }) {
           products.map((product) => <ProductRow key={product.id} product={product} />)
         ) : (
           <tr>
-            <td colSpan="5" className="text-center">
+            <td colSpan="7" className="text-center">
               هیچ محصولی یافت نشد.
             </td>
           </tr>

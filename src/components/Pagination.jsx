@@ -87,7 +87,7 @@ function Pagination({ currentPage, pageCount, countOnPage, onPageChange, onCount
   };
 
   return (
-    <div className="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+    <div className="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center mt-2">
       <ul className="pagination">
         {currentPage !== 1 && (
           <li>

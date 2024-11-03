@@ -2,7 +2,7 @@ import ProductRow from './ProductRow';
 
 function ProductTable({ products }) {
   return (
-    <table className="table table-report -mt-2">
+    <table className="table table-report">
       <thead>
         <tr>
           <th className="whitespace-nowrap">تصاویر</th>

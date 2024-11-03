@@ -1,10 +1,8 @@
-import { useRef } from "react";
-import Pagination from "../../components/Pagination";
-import useProductData from "../../hooks/useProductData.";
-import { getProductsService } from "../../services/Axios/Request/products";
-import ProductTable from "./components/ProductTable";
-import ModalBtn from "../../components/Modal/ModalBtn";
-import AddProductModalContent from "./components/AddProductModalContent";
+import { useRef } from 'react';
+import Pagination from '../../components/Pagination';
+import useProductData from '../../hooks/useProductData.';
+import { getSettingProductsService } from '../../services/Axios/Request/products';
+import ProductTable from './components/ProductTable';
 
 function RobotProduct() {
   const {
@@ -17,7 +15,7 @@ function RobotProduct() {
     countOnPage,
     setCountOnPage,
     pageCount,
-  } = useProductData(getProductsService);
+  } = useProductData(getSettingProductsService);
 
   const searchInputRef = useRef(null);
 
@@ -48,13 +46,10 @@ function RobotProduct() {
           </div>
           <div className="hidden md:block mx-auto text-gray-600">
             {loading
-              ? "..."
+              ? '...'
               : `نمایش ${(currentPage - 1) * countOnPage + 1} تا ${Math.min(currentPage * countOnPage)} 
               از ${data?.pagination?.totalCount} داده`}
           </div>
-          <ModalBtn textBtnOpen="ثبت محصول جدید" title="ثبت محصول جدید" size="sm">
-            <AddProductModalContent />
-          </ModalBtn>
         </div>
 
         <div className="intro-y col-span-12 overflow-auto lg:overflow-visible">

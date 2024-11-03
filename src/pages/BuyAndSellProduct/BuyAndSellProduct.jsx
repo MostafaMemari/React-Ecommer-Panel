@@ -1,8 +1,8 @@
-import { createContext, useRef } from "react";
-import CardProducts from "./components/CardProducts";
-import useProductData from "../../hooks/useProductData.";
-import { getProductsService } from "../../services/Axios/Request/products";
-import Pagination from "../../components/Pagination";
+import { createContext, useRef } from 'react';
+import CardProducts from './components/CardProducts';
+import useProductData from '../../hooks/useProductData.';
+import Pagination from '../../components/Pagination';
+import { getReportPurchaseProductsService, getReportSaleProductsService } from '../../services/Axios/Request/products';
 
 export const ProductContext = createContext();
 
@@ -18,7 +18,7 @@ function BuyAndSellProduct({ pageType }) {
     setCountOnPage,
     pageCount,
     handleGetProducts,
-  } = useProductData(getProductsService);
+  } = useProductData(pageType === 'buy' ? getReportPurchaseProductsService : getReportSaleProductsService);
 
   const searchInputRef = useRef(null);
 
@@ -30,14 +30,14 @@ function BuyAndSellProduct({ pageType }) {
 
   const reloadProductsAndFocus = async () => {
     setCurrentPage(1);
-    setSearchChar("");
+    setSearchChar('');
     await handleGetProducts(currentPage, countOnPage, searchChar);
     searchInputRef.current.focus();
   };
 
   return (
     <>
-      <h2 className="intro-y text-lg font-medium mt-5">{pageType === "buy" ? "صفحه خرید محصول" : "صفحه فروش محصول"}</h2>
+      <h2 className="intro-y text-lg font-medium mt-5">{pageType === 'buy' ? 'صفحه خرید محصول' : 'صفحه فروش محصول'}</h2>
       <div className="grid grid-cols-12 gap-6 mt-5">
         <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
           <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:mr-auto md:mr-0">
@@ -56,7 +56,7 @@ function BuyAndSellProduct({ pageType }) {
 
           <div className="hidden md:block mx-auto text-gray-600">
             {loading
-              ? "..."
+              ? '...'
               : `نمایش ${(currentPage - 1) * countOnPage + 1} تا ${Math.min(currentPage * countOnPage)}
               از ${data?.pagination?.totalCount} داده`}
           </div>

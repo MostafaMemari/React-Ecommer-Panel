@@ -4,6 +4,23 @@ export const getProductsService = (page, limit, search) => {
   return httpService(`/products?page=${page}&limit=${limit}&search=${search}`, 'get');
 };
 
+//* Product Report
+export const getReportSaleProductsService = (page, limit, search) => {
+  return httpService(`/products/sale?page=${page}&limit=${limit}&search=${search}`, 'get');
+};
+export const getReportPurchaseProductsService = (page, limit, search) => {
+  return httpService(`/products/purchase?page=${page}&limit=${limit}&search=${search}`, 'get');
+};
+
+//* Product Setting
+export const createSettingProductsService = (prodcutId, values) => {
+  return httpService(`/products/${prodcutId}/settings`, 'patch', values);
+};
+
+export const getSettingProductsService = (page, limit, search) => {
+  return httpService(`/products/setting?page=${page}&limit=${limit}&search=${search}`, 'get');
+};
+
 export const createProductService = async (values) => {
   const formData = new FormData();
 

@@ -8,7 +8,7 @@ function ProductRow({ product }) {
               alt={product.product.name}
               className="tooltip rounded-full"
               src={product.product.image}
-              title={`به روز شده در ${product.updatedAt}`}
+              title={`به روز شده در ${product.updated_at}`}
             />
           </div>
         </div>
@@ -20,9 +20,9 @@ function ProductRow({ product }) {
         <div className="text-gray-600 text-xs whitespace-nowrap mt-0.5">{product.category}</div>
       </td>
       <td className="text-center">{product.quantity}</td>
-      <td className="w-40">{product.type === "sale" ? "فروش" : product.type === "purchase" ? "خرید" : ""}</td>
+      <td className="w-40">{product.type === 'sale' ? 'فروش' : product.type === 'purchase' ? 'خرید' : ''}</td>
       <td className="table-report__action w-56">
-        {product.createdAt ? new Date(product.createdAt).toLocaleString("fa-IR") : "N/A"}
+        {product.created_at ? new Date(product.created_at).toLocaleString('fa-IR') : 'N/A'}
       </td>
     </tr>
   );
