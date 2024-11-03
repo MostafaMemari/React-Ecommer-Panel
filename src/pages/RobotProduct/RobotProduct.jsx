@@ -29,7 +29,7 @@ function RobotProduct() {
     <div>
       <h2 className="intro-y text-lg font-medium mt-5">چینش لیست داده‌ای</h2>
 
-      <div className="grid grid-cols-12 gap-6 mt-5 ">
+      <div className="grid grid-cols-12 gap-6 mt-5">
         <div className="col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
           <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:mr-auto md:mr-0">
             <div className="w-56 relative text-gray-700 dark:text-gray-300">

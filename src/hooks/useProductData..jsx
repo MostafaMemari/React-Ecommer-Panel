@@ -8,10 +8,10 @@ const useProductData = (getProductsService) => {
   const [countOnPage, setCountOnPage] = useState(10);
   const [pageCount, setPageCount] = useState(0);
 
-  const handleGetProducts = async (page, count, char) => {
+  const handleGetProducts = async (page, count, char, filters) => {
     setLoading(true);
     try {
-      const res = await getProductsService(page, count, char);
+      const res = await getProductsService(page, count, char, filters);
       if (res.status === 200) {
         setData(res.data);
         setPageCount(res.data.pagination.pageCount);

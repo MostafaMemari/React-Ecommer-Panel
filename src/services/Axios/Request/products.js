@@ -4,12 +4,26 @@ export const getProductsService = (page, limit, search) => {
   return httpService(`/products?page=${page}&limit=${limit}&search=${search}`, 'get');
 };
 
-//* Product Report
-export const getReportSaleProductsService = (page, limit, search) => {
-  return httpService(`/products/sale?page=${page}&limit=${limit}&search=${search}`, 'get');
+// Product Report
+export const getReportSaleProductsService = (page, limit, search, filters = {}) => {
+  const validFilters = Object.fromEntries(
+    Object.entries(filters).filter(([_, value]) => value !== null && value !== undefined),
+  );
+  const filterParams = new URLSearchParams(validFilters).toString();
+  const url = `/products/sale?page=${page}&limit=${limit}&search=${search}${filterParams ? `&${filterParams}` : ''}`;
+  return httpService(url, 'get');
 };
-export const getReportPurchaseProductsService = (page, limit, search) => {
-  return httpService(`/products/purchase?page=${page}&limit=${limit}&search=${search}`, 'get');
+
+export const getReportPurchaseProductsService = (page, limit, search, filters = {}) => {
+  const validFilters = Object.fromEntries(
+    Object.entries(filters).filter(([_, value]) => value !== null && value !== undefined),
+  );
+  const filterParams = new URLSearchParams(validFilters).toString();
+  const url = `/products/purchase?page=${page}&limit=${limit}&search=${search}${
+    filterParams ? `&${filterParams}` : ''
+  }`;
+
+  return httpService(url, 'get');
 };
 
 //* Product Setting

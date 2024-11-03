@@ -83,6 +83,7 @@ function ProductRow({ product }) {
           onChange={(e) => setIsBuyBox(e.target.checked)}
         />
       </td>
+
       <td className="text-center whitespace-nowrap">
         <input
           checked={isCheckPrice}
@@ -111,6 +112,7 @@ function ProductRow({ product }) {
           onChange={(e) => setMinPrice(e.target.value)}
         />
       </td>
+
       <td className="text-center whitespace-nowrap">
         <button onClick={handleSubmit} class="btn btn-primary w-24 ml-1 mb-2">
           ثبت

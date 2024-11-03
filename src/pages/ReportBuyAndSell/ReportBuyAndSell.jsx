@@ -1,10 +1,10 @@
-import { useRef } from "react";
-import Pagination from "../../components/Pagination";
-import useProductData from "../../hooks/useProductData.";
-import ModalButton from "../../components/Modal/ModalButton";
-import AddProductModal from "../ManageProduct/components/AddProductModal";
-import { getTransactionsProductService } from "../../services/Axios/Request/transactions";
-import ProductTable from "./components/ProductTable";
+import { useRef, useState } from 'react';
+import Pagination from '../../components/Pagination';
+import useProductData from '../../hooks/useProductData.';
+import ModalButton from '../../components/Modal/ModalButton';
+import AddProductModal from '../ManageProduct/components/AddProductModal';
+import { getTransactionsProductService } from '../../services/Axios/Request/transactions';
+import ProductTable from './components/ProductTable';
 
 function ManageProduct() {
   const {
@@ -19,14 +19,18 @@ function ManageProduct() {
     pageCount,
   } = useProductData(getTransactionsProductService);
 
+  const [searchInput, setSearchInput] = useState('');
   const searchInputRef = useRef(null);
 
-  console.log(data);
+  const handleInputChange = (e) => {
+    setSearchInput(e.target.value);
+  };
 
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchChar(value);
-    setCurrentPage(1);
+  const handleSearchKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setSearchChar(searchInput);
+      setCurrentPage(1);
+    }
   };
 
   return (
@@ -42,8 +46,9 @@ function ManageProduct() {
                 type="text"
                 className="form-control w-56 box pl-10 placeholder-theme-13"
                 placeholder="جستجو..."
-                value={searchChar}
-                onChange={handleSearchChange}
+                value={searchInput}
+                onChange={handleInputChange}
+                onKeyDown={handleSearchKeyDown}
               />
               <i className="w-4 h-4 absolute my-auto inset-y-0 ml-3 left-0" data-feather="search"></i>
             </div>
@@ -51,7 +56,7 @@ function ManageProduct() {
 
           <div className="hidden md:block mx-auto text-gray-600">
             {loading
-              ? "..."
+              ? '...'
               : `نمایش ${(currentPage - 1) * countOnPage + 1} تا ${Math.min(currentPage * countOnPage)} 
               از ${data?.pagination?.totalCount} داده`}
           </div>

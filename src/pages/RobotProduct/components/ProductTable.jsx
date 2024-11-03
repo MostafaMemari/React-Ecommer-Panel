@@ -20,7 +20,7 @@ function ProductTable({ products }) {
           products.map((product) => <ProductRow key={product.id} product={product} />)
         ) : (
           <tr>
-            <td colSpan="7" className="text-center">
+            <td colSpan="8" className="text-center">
               هیچ محصولی یافت نشد.
             </td>
           </tr>
