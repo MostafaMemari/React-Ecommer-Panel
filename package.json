@@ -12,9 +12,11 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
     "axios": "^1.7.7",
+    "clsx": "^2.1.1",
     "feather-icons": "^4.29.2",
     "formik": "^2.4.6",
     "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.1.2",
@@ -23,6 +25,7 @@
     "redux": "^5.0.1",
     "sweetalert2": "^11.14.1",
     "sweetalert2-react-content": "^5.0.7",
+    "tom-select": "^2.3.1",
     "yup": "^1.4.0",
     "zxcvbn": "^4.4.2"
   },

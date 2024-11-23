@@ -11,7 +11,6 @@ function ProductRow({ product }) {
     reduce_price: initialReducePrice,
   } = product?.product_settings || {};
 
-  // مدیریت وضعیت فیلدها
   const [isActive, setIsActive] = useState(initialIsActive);
   const [isBuyBox, setIsBuyBox] = useState(initialIsBuyBox);
   const [isCheckPrice, setIsCheckPrice] = useState(initialIsCheckPrice);

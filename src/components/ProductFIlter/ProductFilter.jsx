@@ -91,7 +91,7 @@ function ProductFilter({ onFilterChange }) {
       <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center space-y-2">
         <div className="sm:ml-2 w-full sm:w-auto">
           <input
-            className="form-control w-full"
+            className="form-control w-full mt-2"
             placeholder="موجودی کمتر از"
             value={quantityMax || ''}
             onChange={handleQuantityMaxChange}

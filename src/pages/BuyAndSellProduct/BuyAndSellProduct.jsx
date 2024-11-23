@@ -1,5 +1,4 @@
-// BuyAndSellProduct.js
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useRef } from 'react';
 import CardProducts from './components/CardProducts';
 import Pagination from '../../components/Pagination';
 import { getReportPurchaseProductsService, getReportSaleProductsService } from '../../services/Axios/Request/products';
@@ -36,6 +35,14 @@ function BuyAndSellProduct({ pageType }) {
     handleGetProducts(currentPage, countOnPage, searchChar, filters);
   }, [currentPage, countOnPage, searchChar, filters]);
 
+  const searchBoxRef = useRef(null);
+
+  const reloadProductsAndFocus = () => {
+    setCurrentPage(1);
+    handleGetProducts(1, countOnPage, '', filters);
+    searchBoxRef.current?.clearAndFocusInput();
+  };
+
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-5">{pageType === 'buy' ? 'صفحه خرید محصول' : 'صفحه فروش محصول'}</h2>
@@ -43,6 +50,7 @@ function BuyAndSellProduct({ pageType }) {
       <div className="grid grid-cols-12 gap-6 mt-5">
         <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
           <SearchBox
+            ref={searchBoxRef}
             onSearch={(searchValue) => {
               setSearchChar(searchValue);
               setCurrentPage(1);
@@ -58,7 +66,7 @@ function BuyAndSellProduct({ pageType }) {
       {loading ? (
         <h2 className="text-center">در حال بارگذاری...</h2>
       ) : (
-        <ProductContext.Provider value={{ pageType }}>
+        <ProductContext.Provider value={{ pageType, reloadProductsAndFocus }}>
           <CardProducts products={data.products} />
         </ProductContext.Provider>
       )}

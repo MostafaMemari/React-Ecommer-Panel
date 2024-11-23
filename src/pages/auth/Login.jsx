@@ -13,7 +13,7 @@ const handleLogin = async (values, submitMethods, navigate) => {
     const res = await loginService(values);
     if (res.status == 200) {
       const { accessToken } = res.data;
-      Cookies.set('access_token', accessToken, { expires: 7 });
+      Cookies.set('access_token', accessToken, { expires: 30 });
       window.location.reload();
       // navigate('/');
     } else {

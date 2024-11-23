@@ -2,7 +2,7 @@ import axios from 'axios';
 import config from './config.json';
 import Cookies from 'js-cookie';
 
-export const apiPath = config.offlinePath;
+export const apiPath = config.onlinePath;
 
 const httpService = (url, method, data = null, ContentType = 'application/json') => {
   const token = Cookies.get('access_token');
