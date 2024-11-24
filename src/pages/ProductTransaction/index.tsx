@@ -2,7 +2,7 @@ import _ from "lodash";
 import { useEffect, useState } from "react";
 import Table from "../../base-components/Table";
 import { useFetchData } from "../../hooks/useFetchData";
-import { getReportPurchaseProductsService } from "../../services/Axios/Request/products";
+import { getReportPurchaseProductsService, getReportSaleProductsService } from "../../services/Axios/Request/products";
 import { Toast } from "../../base-components/Toast";
 import Pagination from "../../components/Pagination/Pagination";
 import SearchInput from "../../base-components/SearchInput";
@@ -30,22 +30,28 @@ type Filters = {
   categoryId?: string;
   colorId?: string;
   sellerId?: string;
+  minStock?: number;
+  maxStock?: number;
+  sortOrder?: "ASC" | "DESC";
+  updatedAt?: "ASC" | "DESC";
 };
 
 const Main: React.FC<MainProps> = ({ transactionType }) => {
   const { page, limit, search, updatePage, updateLimit, updateSearch } = usePagination();
 
-  const [select, setSelect] = useState("1");
-
   const [filters, setFilters] = useState<Filters>({});
 
-  const { data, loading, error, refetch } = useFetchData(getReportPurchaseProductsService, [page, limit, search]);
+  const { data, loading, error, refetch } = useFetchData(
+    transactionType === TransactionType.PURCHASE ? getReportPurchaseProductsService : getReportSaleProductsService,
+    [page, limit, search]
+  );
 
   const { options: categoryOptions, loading: loadingCategory } = useOptionsData(getCategoriesService);
   const { options: colorOptions, loading: loadingColor } = useOptionsData(getColorsService);
   const { options: sellerOptions, loading: loadingSeller } = useOptionsData(getSellersService);
 
   const handleFilterUpdate = (filterKey: keyof Filters, value: string) => {
+    console.log(filterKey, value);
     setFilters((prevFilters) => ({ ...prevFilters, [filterKey]: value }));
     refetch([page, limit, search, { ...filters, [filterKey]: value }]);
   };
@@ -117,36 +123,34 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
           />
         </div>
         <div className="flex flex-col sm:flex-row items-center col-span-12 justify-between gap-3 intro-y sm:flex-nowrap">
-          <FormInput className="" id={`regular-form`} type="number" placeholder="موجودی کمتر از" />
           <FormInput
-            className=""
-            id={`regular-form`}
+            onChange={(e) => handleFilterUpdate("maxStock", e.target.value)}
             type="number"
-            placeholder="موجودی بیشتر
-           از"
+            placeholder="موجودی کمتر از"
           />
-          <FormInput className="" id={`regular-form`} type="number" placeholder="فروش بیشتر از" />
+          <FormInput
+            onChange={(e) => handleFilterUpdate("minStock", e.target.value)}
+            type="number"
+            placeholder="موجودی بیشتر از"
+          />
+
           <TomSelect
-            value={select}
-            onChange={setSelect}
-            options={{
-              placeholder: "Select your favorite categorys",
-            }}
+            onChange={(value: "ASC" | "DESC") => handleFilterUpdate("sortOrder", value)}
+            value={filters.sortOrder || "0"}
+            options={{ placeholder: "ترتیب موجودی" }}
             className="w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200"
           >
-            <option value="1">صعودی</option>
-            <option value="2">نزولی</option>
+            <option value="ASC">صعودی</option>
+            <option value="DESC">نزولی</option>
           </TomSelect>
           <TomSelect
-            value={select}
-            onChange={setSelect}
-            options={{
-              placeholder: "Select your favorite categorys",
-            }}
+            onChange={(value: "ASC" | "DESC") => handleFilterUpdate("updatedAt", value)}
+            value={filters.updatedAt || "DESC"}
+            options={{ placeholder: "آخرین تغییرات" }}
             className="w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200"
           >
-            <option value="1">صعودی</option>
-            <option value="2">نزولی</option>
+            <option value="ASC">صعودی</option>
+            <option value="DESC">نزولی</option>
           </TomSelect>
         </div>
 
