@@ -10,19 +10,20 @@ type ServiceFunction<T> = (...args: any[]) => Promise<T>;
 
 export const useFetchData = <T,>(
   serviceFunction: ServiceFunction<T>,
-  ...args: any[]
-): FetchState<T> & { refetch: (resetPage?: boolean) => Promise<void> } => {
+  defaultArgs: any[] = []
+): FetchState<T> & { refetch: (newArgs?: any[], resetPage?: boolean) => Promise<void> } => {
   const [state, setState] = useState<FetchState<T>>({
     data: null,
     loading: true,
     error: null,
   });
 
-  const fetchData = async (customArgs?: any[]) => {
-    setState({ data: null, loading: true, error: null });
+  const [queryArgs, setQueryArgs] = useState<any[]>(defaultArgs);
+
+  const fetchData = async (args: any[] = queryArgs) => {
+    setState((prevState) => ({ ...prevState, loading: true, error: null }));
     try {
-      const finalArgs = customArgs || args;
-      const data = await serviceFunction(...finalArgs);
+      const data = await serviceFunction(...args);
       setState({ data, loading: false, error: null });
     } catch (error: unknown) {
       setState({
@@ -35,13 +36,22 @@ export const useFetchData = <T,>(
 
   useEffect(() => {
     fetchData();
-  }, [serviceFunction, ...args]);
+  }, [serviceFunction, JSON.stringify(queryArgs)]);
 
   return {
     ...state,
-    refetch: async (resetPage = false) => {
-      const newArgs = args.map((arg, index) => (resetPage && index === 0 ? 1 : arg));
-      await fetchData(newArgs);
+    refetch: async (newArgs: any[] = [], resetPage: boolean = false) => {
+      const updatedArgs = queryArgs.map((arg, index) => {
+        if (resetPage && index === 0) return 1;
+        return newArgs[index] !== undefined ? newArgs[index] : arg;
+      });
+
+      if (newArgs.length > queryArgs.length) {
+        updatedArgs.push(...newArgs.slice(queryArgs.length));
+      }
+
+      setQueryArgs(updatedArgs);
+      await fetchData(updatedArgs);
     },
   };
 };

@@ -39,11 +39,11 @@ export const getReportPurchaseProductsService = (
   search: string,
   filters: Filters = {}
 ): Promise<any> => {
-  const validFilters = Object.fromEntries(
-    Object.entries(filters).filter(([_, value]) => value !== null && value !== undefined)
-  );
+  const validFilters = Object.fromEntries(Object.entries(filters).filter(([_, value]) => value != null));
+
   const filterParams = new URLSearchParams(validFilters as Record<string, string>).toString();
-  const url = `/products/purchase?page=${page}&limit=${limit}&search=${search}${
+
+  const url = `/products/purchase?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}${
     filterParams ? `&${filterParams}` : ""
   }`;
   return httpService(url, "get");
