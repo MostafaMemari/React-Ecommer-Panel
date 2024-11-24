@@ -29,3 +29,13 @@ export type RelatedProduct = {
   image?: string;
   name?: string;
 };
+
+export type FiltersProduct = {
+  categoryId?: string;
+  colorId?: string;
+  sellerId?: string;
+  minStock?: number;
+  maxStock?: number;
+  sortOrder?: "ASC" | "DESC";
+  updatedAt?: "ASC" | "DESC";
+};

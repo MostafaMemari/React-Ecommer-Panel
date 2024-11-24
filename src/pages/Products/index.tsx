@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _, { filter } from "lodash";
 import { useEffect, useState } from "react";
 import Button from "../../base-components/Button";
 import Table from "../../base-components/Table";
@@ -12,15 +12,30 @@ import DataSummary from "../../base-components/DataSummary/DataSummary";
 
 import LoadingIcon from "../../base-components/LoadingIcon";
 import CreateAndUpdateProductModal from "../../components/ProductFormModal";
+import usePagination from "../../hooks/usePagination";
+import { FiltersProduct } from "../../features/product/types/type";
+import TomSelect from "../../base-components/TomSelect";
+import useOptionsData from "../../hooks/useOptionsData";
+import { getCategoriesService } from "../../services/Axios/Request/categories";
+import { getColorsService } from "../../services/Axios/Request/colors";
+import { getSellersService } from "../../services/Axios/Request/sellers";
+
+import TomSelectCategory from "../../components/TomSelect";
+import TomSelectColor from "../../components/TomSelect";
+import TomSelectSeller from "../../components/TomSelect";
+import { FormInput } from "../../base-components/Form";
 
 function Main() {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState("");
+  const { page, limit, search, updatePage, updateLimit, updateSearch } = usePagination();
+
+  const [filters, setFilters] = useState<FiltersProduct>({});
 
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
 
-  const { data, loading, error, refetch } = useFetchData(getProductsService, page, limit, search);
+  const { data, loading, error, refetch } = useFetchData(getProductsService, [page, limit, search]);
+  const { options: categoryOptions, loading: loadingCategory } = useOptionsData(getCategoriesService);
+  const { options: colorOptions, loading: loadingColor } = useOptionsData(getColorsService);
+  const { options: sellerOptions, loading: loadingSeller } = useOptionsData(getSellersService);
 
   useEffect(() => {
     if (!loading && !data?.data.products) {
@@ -28,13 +43,27 @@ function Main() {
     }
   }, [loading, data]);
 
-  const handlePageChange = (newPage: number) => setPage(newPage);
-  const handleLimitChange = (newLimit: number) => setLimit(newLimit);
-  const handleSearch = (searchValue: string) => setSearch(searchValue);
+  const handlePageChange = (newPage: number) => {
+    updatePage(newPage);
+    refetch([newPage, limit, search, filters]);
+  };
+  const handleLimitChange = (newLimit: number) => {
+    updateLimit(newLimit);
+    refetch([1, newLimit, search, filters]);
+  };
+  const handleSearch = (searchValue: string) => {
+    if (searchValue === search) return;
+    updateSearch(searchValue);
+    refetch([1, limit, searchValue, filters]);
+  };
+
+  const handleFilterUpdate = (filterKey: keyof FiltersProduct, value: string) => {
+    setFilters((prevFilters) => ({ ...prevFilters, [filterKey]: value }));
+    refetch([page, limit, search, { ...filters, [filterKey]: value }]);
+  };
 
   const handleProductSubmission = () => {
-    setPage(1);
-    refetch(true);
+    refetch();
   };
 
   const start = (page - 1) * limit + 1;
@@ -61,6 +90,63 @@ function Main() {
           )}
 
           <SearchInput searchType="change" debounceDelay={300} onSearch={handleSearch} />
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-center col-span-12 justify-between gap-3 intro-y sm:flex-nowrap">
+          <TomSelectColor
+            loading={loadingColor}
+            value={filters.colorId || "0"}
+            onChange={(value) => handleFilterUpdate("colorId", value)}
+            options={colorOptions}
+            placeholder="انتخاب رنگ"
+          />
+
+          <TomSelectCategory
+            loading={loadingCategory}
+            value={filters.categoryId || "0"}
+            onChange={(value) => handleFilterUpdate("categoryId", value)}
+            options={categoryOptions}
+            placeholder="انتخاب دسته‌بندی"
+          />
+
+          <TomSelectSeller
+            loading={loadingSeller}
+            value={filters.sellerId || "0"}
+            onChange={(value) => handleFilterUpdate("sellerId", value)}
+            options={sellerOptions}
+            placeholder="انتخاب فروشنده"
+          />
+        </div>
+        <div className="flex flex-col sm:flex-row items-center col-span-12 justify-between gap-3 intro-y sm:flex-nowrap">
+          <FormInput
+            onChange={(e) => handleFilterUpdate("maxStock", e.target.value)}
+            type="number"
+            placeholder="موجودی کمتر از"
+          />
+          <FormInput
+            onChange={(e) => handleFilterUpdate("minStock", e.target.value)}
+            type="number"
+            placeholder="موجودی بیشتر از"
+          />
+
+          <TomSelect
+            onChange={(value: "ASC" | "DESC") => handleFilterUpdate("sortOrder", value)}
+            value={filters.sortOrder || "0"}
+            options={{ placeholder: "ترتیب موجودی" }}
+            className="w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200"
+          >
+            <option value="ASC">صعودی</option>
+            <option value="DESC">نزولی</option>
+          </TomSelect>
+          <TomSelect
+            onChange={(value: "ASC" | "DESC") => handleFilterUpdate("updatedAt", value)}
+            value={filters.updatedAt || "DESC"}
+            options={{ placeholder: "آخرین تغییرات" }}
+            className="w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200"
+          >
+            <option value="ASC">صعودی</option>
+            <option value="DESC">نزولی</option>
+          </TomSelect>
         </div>
 
         <div className="col-span-12 overflow-auto intro-y lg:overflow-visible">

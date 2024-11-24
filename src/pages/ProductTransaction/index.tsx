@@ -21,25 +21,16 @@ import { getColorsService } from "../../services/Axios/Request/colors";
 import { getSellersService } from "../../services/Axios/Request/sellers";
 import useOptionsData from "../../hooks/useOptionsData";
 import usePagination from "../../hooks/usePagination";
+import { FiltersProduct } from "../../features/product/types/type";
 
 interface MainProps {
   transactionType: TransactionType;
 }
 
-type Filters = {
-  categoryId?: string;
-  colorId?: string;
-  sellerId?: string;
-  minStock?: number;
-  maxStock?: number;
-  sortOrder?: "ASC" | "DESC";
-  updatedAt?: "ASC" | "DESC";
-};
-
 const Main: React.FC<MainProps> = ({ transactionType }) => {
   const { page, limit, search, updatePage, updateLimit, updateSearch } = usePagination();
 
-  const [filters, setFilters] = useState<Filters>({});
+  const [filters, setFilters] = useState<FiltersProduct>({});
 
   const { data, loading, error, refetch } = useFetchData(
     transactionType === TransactionType.PURCHASE ? getReportPurchaseProductsService : getReportSaleProductsService,
@@ -50,8 +41,7 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
   const { options: colorOptions, loading: loadingColor } = useOptionsData(getColorsService);
   const { options: sellerOptions, loading: loadingSeller } = useOptionsData(getSellersService);
 
-  const handleFilterUpdate = (filterKey: keyof Filters, value: string) => {
-    console.log(filterKey, value);
+  const handleFilterUpdate = (filterKey: keyof FiltersProduct, value: string) => {
     setFilters((prevFilters) => ({ ...prevFilters, [filterKey]: value }));
     refetch([page, limit, search, { ...filters, [filterKey]: value }]);
   };
