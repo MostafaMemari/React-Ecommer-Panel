@@ -93,7 +93,7 @@ function Main() {
           <SearchInput searchType="change" debounceDelay={300} onSearch={handleSearch} />
         </div>
 
-        <div className="col-span-12">
+        <div className="col-span-12 intro-y">
           <Filters
             filters={filters}
             onFilterUpdate={handleFilterUpdate}

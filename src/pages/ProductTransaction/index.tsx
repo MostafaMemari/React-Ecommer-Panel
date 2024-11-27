@@ -88,7 +88,7 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
 
           <SearchInput searchType="enter" onSearch={handleSearch} />
         </div>
-        <div className="col-span-12">
+        <div className="col-span-12 intro-y">
           <Filters
             filters={filters}
             onFilterUpdate={handleFilterUpdate}
