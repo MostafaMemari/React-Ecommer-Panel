@@ -16,7 +16,7 @@ function Main() {
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
 
-  const { data, loading } = useFetchData(getTransactionsProductService, page, limit, search);
+  const { data, loading } = useFetchData(getTransactionsProductService, [page, limit, search]);
 
   useEffect(() => {
     if (!loading && !data?.data.products) {

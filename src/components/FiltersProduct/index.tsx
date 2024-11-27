@@ -71,7 +71,12 @@ const Filters: React.FC<FiltersProps> = ({
         <FormInput
           type="number"
           value={filters.minStock || ""}
-          onChange={(e) => onFilterUpdate("minStock", Number(e.target.value))}
+          onChange={(e) => {
+            const value: any = e.target.value;
+            if (!isNaN(value) && Number(value) >= 0) {
+              onFilterUpdate("minStock", Number(value));
+            }
+          }}
           placeholder="موجودی بیشتر از"
         />
       </div>
@@ -80,7 +85,12 @@ const Filters: React.FC<FiltersProps> = ({
         <FormInput
           type="number"
           value={filters.maxStock || ""}
-          onChange={(e) => onFilterUpdate("maxStock", Number(e.target.value))}
+          onChange={(e) => {
+            const value: any = e.target.value;
+            if (!isNaN(value) && Number(value) >= 0) {
+              onFilterUpdate("maxStock", Number(value));
+            }
+          }}
           placeholder="موجودی کمتر از"
         />
       </div>
