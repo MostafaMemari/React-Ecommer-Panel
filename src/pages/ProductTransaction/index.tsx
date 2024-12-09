@@ -1,21 +1,17 @@
 import _ from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Table from "../../base-components/Table";
 import { useFetchData } from "../../hooks/useFetchData";
 import { getReportPurchaseProductsService, getReportSaleProductsService } from "../../services/Axios/Request/products";
 import { Toast } from "../../base-components/Toast";
 import Pagination from "../../components/Pagination/Pagination";
-import SearchInput from "../../base-components/SearchInput";
+import SearchInput, { SearchInputHandle } from "../../base-components/SearchInput";
 import DataSummary from "../../base-components/DataSummary/DataSummary";
 
 import LoadingIcon from "../../base-components/LoadingIcon";
 import ProductCard from "./components/ProductCard";
 import { TransactionType } from "../../features/transaction/types/enym";
-import TomSelect from "../../base-components/TomSelect";
-import { FormInput } from "../../base-components/Form";
-import TomSelectCategory from "../../components/TomSelect";
-import TomSelectColor from "../../components/TomSelect";
-import TomSelectSeller from "../../components/TomSelect";
+
 import { getCategoriesService } from "../../services/Axios/Request/categories";
 import { getColorsService } from "../../services/Axios/Request/colors";
 import { getSellersService } from "../../services/Axios/Request/sellers";
@@ -31,11 +27,14 @@ interface MainProps {
 const Main: React.FC<MainProps> = ({ transactionType }) => {
   const { page, limit, search, updatePage, updateLimit, updateSearch } = usePagination();
 
+  const searchInputRef = useRef<SearchInputHandle>(null);
+
   const [filters, setFilters] = useState<FiltersProduct>({});
 
   const { data, loading, error, refetch } = useFetchData(
     transactionType === TransactionType.PURCHASE ? getReportPurchaseProductsService : getReportSaleProductsService,
-    [page, limit, search]
+    [page, limit, search],
+    false
   );
 
   const { options: categoryOptions, loading: loadingCategory } = useOptionsData(getCategoriesService);
@@ -48,7 +47,12 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
   };
 
   useEffect(() => {
-    if (!loading && !data?.data.products) {
+    console.log("use effect");
+    refetch([page, limit, search, filters]);
+  }, []);
+
+  useEffect(() => {
+    if (error) {
       Toast("دریافت اطلاعات با خطا مواجه شد", "error");
     }
   }, [loading, data]);
@@ -62,12 +66,19 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
     refetch([page, newLimit, search, filters]);
   };
   const handleSearch = (searchValue: string) => {
+    if (searchValue === search) return;
     updateSearch(searchValue);
     refetch([page, limit, searchValue, filters]);
   };
 
+  const resetSearch = () => {
+    if (searchInputRef.current) {
+      searchInputRef.current.clearAndFocus();
+    }
+  };
+
   const handleProductSubmission = () => {
-    refetch();
+    updatePage(1);
   };
 
   const start = (page - 1) * limit + 1;
@@ -86,7 +97,8 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
             <div className="hidden mx-auto md:block text-slate-500"></div>
           )}
 
-          <SearchInput searchType="enter" onSearch={handleSearch} />
+          {/* <SearchInput searchType="enter" onSearch={handleSearch} /> */}
+          <SearchInput ref={searchInputRef} searchType="change" debounceDelay={300} onSearch={handleSearch} />
         </div>
         <div className="col-span-12 intro-y">
           <Filters
@@ -112,6 +124,7 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
               </div>
             ) : data?.data.products ? (
               <ProductCard
+                resetSearch={resetSearch}
                 onSuccess={handleProductSubmission}
                 products={data?.data.products}
                 transactionType={transactionType}

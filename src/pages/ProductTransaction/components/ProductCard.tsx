@@ -11,9 +11,10 @@ interface ProductCardProps {
   products: Product[];
   onSuccess: () => void;
   transactionType: TransactionType;
+  resetSearch: () => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ products, onSuccess, transactionType }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ products, onSuccess, transactionType, resetSearch }) => {
   const transactionLabel = transactionType === TransactionType.PURCHASE ? "خرید" : "فروش";
 
   const [productStates, setProductStates] = useState<Record<number, { inputValue: string; isButtonDisabled: boolean }>>(
@@ -45,6 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ products, onSuccess, transact
         if (result.status === 201) {
           Toast(`${transactionLabel} محصول با موفقیت انجام شد`);
           onSuccess();
+          resetSearch();
         } else {
           Toast("خطایی در انجام تراکنش رخ داده است", "error");
         }

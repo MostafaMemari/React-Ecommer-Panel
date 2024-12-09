@@ -25,6 +25,7 @@ import TomSelectColor from "../../components/TomSelect";
 import TomSelectSeller from "../../components/TomSelect";
 import { FormInput } from "../../base-components/Form";
 import Filters from "../../components/FiltersProduct";
+import { useProducts } from "../../features/product/hooks/useProducts";
 
 function Main() {
   const { page, limit, search, updatePage, updateLimit, updateSearch } = usePagination();
@@ -34,6 +35,11 @@ function Main() {
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
 
   const { data, loading, error, refetch } = useFetchData(getProductsService, [page, limit, search]);
+
+  const { data: products, error: errorProducts, isLoading } = useProducts();
+
+  console.log(products);
+
   const { options: categoryOptions, loading: loadingCategory } = useOptionsData(getCategoriesService);
   const { options: colorOptions, loading: loadingColor } = useOptionsData(getColorsService);
   const { options: sellerOptions, loading: loadingSeller } = useOptionsData(getSellersService);

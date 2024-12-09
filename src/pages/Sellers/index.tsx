@@ -16,7 +16,7 @@ function Main() {
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
 
   const handleProductSubmission = () => {
-    refetch(true);
+    refetch([]);
   };
 
   useEffect(() => {
@@ -31,7 +31,7 @@ function Main() {
         <h2 className="text-lg font-medium">لیست فروشنده</h2>
         <div className="text-center">
           <Button variant="primary" onClick={() => setIsOpenCreateModal(true)}>
-            ثبت رنگ جدید
+            ثبت فروشنده جدید
           </Button>
           {isOpenCreateModal && (
             <CreateAndUpdateColor onSuccess={handleProductSubmission} onClose={() => setIsOpenCreateModal(false)} />

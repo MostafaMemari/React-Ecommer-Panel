@@ -10,13 +10,12 @@ import DataSummary from "../../base-components/DataSummary/DataSummary";
 
 import LoadingIcon from "../../base-components/LoadingIcon";
 import { getTransactionsProductService } from "../../services/Axios/Request/transactions";
+import usePagination from "../../hooks/usePagination";
 
 function Main() {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState("");
+  const { page, limit, search, updatePage, updateLimit, updateSearch } = usePagination();
 
-  const { data, loading } = useFetchData(getTransactionsProductService, [page, limit, search]);
+  const { data, loading, error, refetch } = useFetchData(getTransactionsProductService, [page, limit, search], true);
 
   useEffect(() => {
     if (!loading && !data?.data.products) {
@@ -24,12 +23,22 @@ function Main() {
     }
   }, [loading, data]);
 
-  const handlePageChange = (newPage: number) => setPage(newPage);
-  const handleLimitChange = (newLimit: number) => setLimit(newLimit);
-  const handleSearch = (searchValue: string) => setSearch(searchValue);
+  const handlePageChange = (newPage: number) => {
+    updatePage(newPage);
+    refetch([newPage, limit, search]);
+  };
+  const handleLimitChange = (newLimit: number) => {
+    updateLimit(newLimit);
+    refetch([1, newLimit, search]);
+  };
+  const handleSearch = (searchValue: string) => {
+    if (searchValue === search) return;
+    updateSearch(searchValue);
+    refetch([1, limit, searchValue]);
+  };
 
   const handleProductSubmission = () => {
-    setPage(1);
+    refetch();
   };
 
   const start = (page - 1) * limit + 1;

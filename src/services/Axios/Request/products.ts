@@ -1,13 +1,25 @@
 import { ProductType } from "../../../features/product/types/enum";
+import { FiltersProduct } from "../../../features/product/types/type";
 import httpService from "../Configs/httpService";
 
 export interface Filters {
   [key: string]: string | number | boolean | null | undefined;
 }
 
-//* Product Service
-export const getProductsService = (page: number, limit: number, search: string): Promise<any> => {
-  return httpService(`/products?page=${page}&limit=${limit}&search=${search}`, "get");
+// ProductsResponse
+
+export const getProductsService = (
+  page: number = 1,
+  limit: number = 10,
+  filters: FiltersProduct = {}
+): Promise<any> => {
+  const params = {
+    page,
+    limit,
+    ...filters,
+  };
+
+  return httpService("/products", "GET", null, params);
 };
 
 //* remove Service
@@ -73,7 +85,7 @@ export const createProductService = async (values: any): Promise<any> => {
     formData.append("relatedProducts", JSON.stringify(values.relatedProducts));
   }
 
-  return httpService(`/products`, "post", formData, "multipart/form-data");
+  return httpService(`/products`, "post", formData);
 };
 
 // Update Product Service
@@ -104,7 +116,7 @@ export const updateProductService = async (productId: number, values: any): Prom
     formData.append("relatedProducts", JSON.stringify(values.relatedProducts));
   }
 
-  return httpService(`/products/${productId}`, "put", formData, "multipart/form-data");
+  return httpService(`/products/${productId}`, "put", formData);
 };
 
 //* Product Settings

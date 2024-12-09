@@ -11,11 +11,10 @@ import SearchInput from "../../base-components/SearchInput";
 import DataSummary from "../../base-components/DataSummary/DataSummary";
 
 import LoadingIcon from "../../base-components/LoadingIcon";
+import usePagination from "../../hooks/usePagination";
 
 function Main() {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState("");
+  const { page, limit, search, updatePage, updateLimit, updateSearch } = usePagination();
 
   const { data, loading, error, refetch } = useFetchData(getSettingProductsService, [page, limit, search]);
 
@@ -25,9 +24,19 @@ function Main() {
     }
   }, [loading, data]);
 
-  const handlePageChange = (newPage: number) => setPage(newPage);
-  const handleLimitChange = (newLimit: number) => setLimit(newLimit);
-  const handleSearch = (searchValue: string) => setSearch(searchValue);
+  const handlePageChange = (newPage: number) => {
+    updatePage(newPage);
+    refetch([newPage, limit, search]);
+  };
+  const handleLimitChange = (newLimit: number) => {
+    updateLimit(newLimit);
+    refetch([1, newLimit, search]);
+  };
+  const handleSearch = (searchValue: string) => {
+    if (searchValue === search) return;
+    updateSearch(searchValue);
+    refetch([1, limit, searchValue]);
+  };
 
   const handleProductSubmission = () => {
     refetch();
