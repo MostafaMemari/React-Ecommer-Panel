@@ -34,39 +34,33 @@ function Main() {
 
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
 
-  const { data, loading, error, refetch } = useFetchData(getProductsService, [page, limit, search]);
-
-  const { data: products, error: errorProducts, isLoading } = useProducts();
-
-  console.log(products);
-
-  const { options: categoryOptions, loading: loadingCategory } = useOptionsData(getCategoriesService);
-  const { options: colorOptions, loading: loadingColor } = useOptionsData(getColorsService);
-  const { options: sellerOptions, loading: loadingSeller } = useOptionsData(getSellersService);
+  const { data, isLoading, error, refetch } = useProducts();
 
   useEffect(() => {
-    if (!loading && !data?.data.products) {
+    if (!isLoading && error) {
       Toast("دریافت اطلاعات با خطا مواجه شد", "error");
     }
-  }, [loading, data]);
+  }, [isLoading, error]);
 
   const handlePageChange = (newPage: number) => {
     updatePage(newPage);
-    refetch([newPage, limit, search, filters]);
+    refetch();
   };
+
   const handleLimitChange = (newLimit: number) => {
     updateLimit(newLimit);
-    refetch([1, newLimit, search, filters]);
+    refetch();
   };
+
   const handleSearch = (searchValue: string) => {
     if (searchValue === search) return;
     updateSearch(searchValue);
-    refetch([1, limit, searchValue, filters]);
+    refetch();
   };
 
   const handleFilterUpdate = (filterKey: keyof FiltersProduct, value: string | number) => {
     setFilters((prevFilters) => ({ ...prevFilters, [filterKey]: value }));
-    refetch([page, limit, search, { ...filters, [filterKey]: value }]);
+    refetch();
   };
 
   const handleProductSubmission = () => {
@@ -74,8 +68,8 @@ function Main() {
   };
 
   const start = (page - 1) * limit + 1;
-  const end = Math.min(page * limit, data?.data.pagination.totalCount || 0);
-  const total = data?.data.pagination.totalCount || 0;
+  const end = Math.min(page * limit, data?.pagination?.totalCount || 0);
+  const total = data?.pagination?.totalCount || 0;
 
   return (
     <>
@@ -92,7 +86,7 @@ function Main() {
             />
           )}
 
-          {(!loading && data?.data.products && <DataSummary start={start} end={end} total={total} />) || (
+          {(!isLoading && data?.products && <DataSummary start={start} end={end} total={total} />) || (
             <div className="hidden mx-auto md:block text-slate-500"></div>
           )}
 
@@ -100,40 +94,31 @@ function Main() {
         </div>
 
         <div className="col-span-12 intro-y">
-          <Filters
-            filters={filters}
-            onFilterUpdate={handleFilterUpdate}
-            loadingColor={loadingColor}
-            loadingCategory={loadingCategory}
-            loadingSeller={loadingSeller}
-            colorOptions={colorOptions}
-            categoryOptions={categoryOptions}
-            sellerOptions={sellerOptions}
-          />
+          <Filters filters={filters} onFilterUpdate={handleFilterUpdate} />
         </div>
 
         <div className="col-span-12 overflow-auto intro-y lg:overflow-visible">
           <Table className="border-spacing-y-[10px] border-separate -mt-2 text-start">
-            {loading ? (
+            {isLoading ? (
               <div className="flex items-center justify-center h-[300px]">
                 <div className="flex flex-col items-center">
                   <LoadingIcon icon="puff" className="w-12 h-12" />
                   <div className="mt-2 text-sm text-center text-gray-500">در حال بارگذاری...</div>
                 </div>
               </div>
-            ) : data?.data.products ? (
-              <ProductTable products={data?.data.products} onSuccess={handleProductSubmission} />
+            ) : data?.products ? (
+              <ProductTable products={data?.products} onSuccess={handleProductSubmission} />
             ) : (
               <h2 className="text-center">هیچ محصولی یافت نشد</h2>
             )}
           </Table>
         </div>
 
-        {loading ? null : data?.data.pagination ? (
+        {isLoading ? null : data?.products ? (
           <Pagination
             page={page}
             limit={limit}
-            pageCount={data?.data.pagination.pageCount}
+            pageCount={data?.pagination.pageCount}
             onPageChange={handlePageChange}
             onLimitChange={handleLimitChange}
           />

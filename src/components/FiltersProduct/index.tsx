@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FiltersProduct } from "../../features/product/types/type";
 
 import TomSelectCategory from "../../components/TomSelect";
@@ -6,61 +6,53 @@ import TomSelectColor from "../../components/TomSelect";
 import TomSelectSeller from "../../components/TomSelect";
 import { FormInput } from "../../base-components/Form";
 import TomSelect from "../../base-components/TomSelect";
+import { useCategories } from "../../features/categories/hooks/useCategories";
+import { useColors } from "../../features/colors/hooks/useColors";
+import { useSellers } from "../../features/sellers/hooks/useSellers";
 
 // **Types**
 interface FiltersProps {
   filters: FiltersProduct;
   onFilterUpdate: (filterKey: keyof FiltersProduct, value: string | number) => void;
-  loadingColor: boolean;
-  loadingCategory: boolean;
-  loadingSeller: boolean;
-  colorOptions: any[];
-  categoryOptions: any[];
-  sellerOptions: any[];
 }
 
-const Filters: React.FC<FiltersProps> = ({
-  filters,
-  onFilterUpdate,
-  loadingColor,
-  loadingCategory,
-  loadingSeller,
-  colorOptions,
-  categoryOptions,
-  sellerOptions,
-}) => {
+const Filters: React.FC<FiltersProps> = ({ filters, onFilterUpdate }) => {
+  const { data: categories, isLoading: isLoadingCategory } = useCategories();
+  const { data: colors, isLoading: isLoadingColor } = useColors();
+  const { data: sellers, isLoading: isLoadingSeller } = useSellers();
+
   return (
     <div className="grid grid-cols-12 gap-3">
-      {loadingColor && loadingCategory && loadingSeller ? (
+      {isLoadingColor && isLoadingCategory && isLoadingSeller ? (
         <div className="mt-2 text-sm text-center text-gray-500">در حال بارگذاری...</div>
       ) : (
         <>
           <div className="col-span-12 md:col-span-4">
             <TomSelectColor
-              loading={loadingColor}
+              loading={isLoadingColor}
               value={filters.colorId || "0"}
               onChange={(value) => onFilterUpdate("colorId", value)}
-              options={colorOptions}
+              options={colors}
               placeholder="انتخاب رنگ"
             />
           </div>
 
           <div className="col-span-12 md:col-span-4">
             <TomSelectCategory
-              loading={loadingCategory}
+              loading={isLoadingCategory}
               value={filters.categoryId || "0"}
               onChange={(value) => onFilterUpdate("categoryId", value)}
-              options={categoryOptions}
+              options={categories}
               placeholder="انتخاب دسته‌بندی"
             />
           </div>
 
           <div className="col-span-12 md:col-span-4">
             <TomSelectSeller
-              loading={loadingSeller}
+              loading={isLoadingSeller}
               value={filters.sellerId || "0"}
               onChange={(value) => onFilterUpdate("sellerId", value)}
-              options={sellerOptions}
+              options={sellers}
               placeholder="انتخاب فروشنده"
             />
           </div>

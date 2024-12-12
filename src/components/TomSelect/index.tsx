@@ -2,7 +2,7 @@ import React from "react";
 import TomSelect from "../../base-components/TomSelect";
 
 interface TomSelectBoxProps {
-  options: { value: string; label: string }[];
+  options: { id: string; name: string }[];
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -19,6 +19,7 @@ const TomSelectBox: React.FC<TomSelectBoxProps> = ({
   const handleChange = (newValue: string) => {
     onChange(newValue);
   };
+
   return (
     <>
       {loading ? (
@@ -33,9 +34,12 @@ const TomSelectBox: React.FC<TomSelectBoxProps> = ({
           className="w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200"
         >
           {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
+            <>
+              {/* {console.log(option)} */}
+              <option key={option.id} value={option.name}>
+                {option.name}
+              </option>
+            </>
           ))}
         </TomSelect>
       )}

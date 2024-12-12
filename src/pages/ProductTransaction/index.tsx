@@ -12,10 +12,6 @@ import LoadingIcon from "../../base-components/LoadingIcon";
 import ProductCard from "./components/ProductCard";
 import { TransactionType } from "../../features/transaction/types/enym";
 
-import { getCategoriesService } from "../../services/Axios/Request/categories";
-import { getColorsService } from "../../services/Axios/Request/colors";
-import { getSellersService } from "../../services/Axios/Request/sellers";
-import useOptionsData from "../../hooks/useOptionsData";
 import usePagination from "../../hooks/usePagination";
 import { FiltersProduct } from "../../features/product/types/type";
 import Filters from "../../components/FiltersProduct";
@@ -36,10 +32,6 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
     [page, limit, search],
     false
   );
-
-  const { options: categoryOptions, loading: loadingCategory } = useOptionsData(getCategoriesService);
-  const { options: colorOptions, loading: loadingColor } = useOptionsData(getColorsService);
-  const { options: sellerOptions, loading: loadingSeller } = useOptionsData(getSellersService);
 
   const handleFilterUpdate = (filterKey: keyof FiltersProduct, value: string | number) => {
     setFilters((prevFilters) => ({ ...prevFilters, [filterKey]: value }));
@@ -101,16 +93,7 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
           <SearchInput ref={searchInputRef} searchType="change" debounceDelay={300} onSearch={handleSearch} />
         </div>
         <div className="col-span-12 intro-y">
-          <Filters
-            filters={filters}
-            onFilterUpdate={handleFilterUpdate}
-            loadingColor={loadingColor}
-            loadingCategory={loadingCategory}
-            loadingSeller={loadingSeller}
-            colorOptions={colorOptions}
-            categoryOptions={categoryOptions}
-            sellerOptions={sellerOptions}
-          />
+          <Filters filters={filters} onFilterUpdate={handleFilterUpdate} />
         </div>
 
         <div className="col-span-12 overflow-auto intro-y lg:overflow-visible">
