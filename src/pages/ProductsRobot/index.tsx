@@ -19,7 +19,6 @@ function Main() {
   const { data, isLoading, isFetching, error, refetch } = useSettingProducts({ page, limit, search });
 
   useEffect(() => {
-    updatePage(1);
     refetch();
   }, [page, limit, search]);
 
@@ -33,9 +32,14 @@ function Main() {
     if (searchValue !== search) updateSearch(searchValue);
   };
 
-  const handlePageChange = updatePage;
-  const handleLimitChange = updateLimit;
-
+  const handlePageChange = (newPage: number) => {
+    updatePage(newPage);
+    refetch();
+  };
+  const handleLimitChange = (newLimit: number) => {
+    updateLimit(newLimit);
+    refetch();
+  };
   const handleProductSubmission = () => {
     updatePage(1);
   };

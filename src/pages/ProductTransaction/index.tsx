@@ -1,8 +1,7 @@
 import _ from "lodash";
 import { useEffect, useRef, useState } from "react";
 import Table from "../../base-components/Table";
-import { useFetchData } from "../../hooks/useFetchData";
-import { getReportPurchaseProductsService, getReportSaleProductsService } from "../../services/Axios/Request/products";
+
 import { Toast } from "../../base-components/Toast";
 import Pagination from "../../components/Pagination/Pagination";
 import SearchInput, { SearchInputHandle } from "../../base-components/SearchInput";
@@ -34,7 +33,6 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
       : usePurchaseProducts({ page, limit, search, ...filters });
 
   useEffect(() => {
-    updatePage(1);
     refetch();
   }, [page, limit, search, filters]);
 

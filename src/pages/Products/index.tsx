@@ -22,10 +22,10 @@ function Main() {
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
   const [filters, setFilters] = useState<FiltersProduct>({});
 
+  console.log(page);
   const { data, isLoading, isFetching, error, refetch } = useProducts({ page, limit, search, ...filters });
 
   useEffect(() => {
-    updatePage(1);
     refetch();
   }, [page, limit, search, filters]);
 

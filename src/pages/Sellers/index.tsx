@@ -2,13 +2,11 @@ import _ from "lodash";
 import { useEffect, useState } from "react";
 import Button from "../../base-components/Button";
 import Table from "../../base-components/Table";
-import { useFetchData } from "../../hooks/useFetchData";
 import { Toast } from "../../base-components/Toast";
 
 import LoadingIcon from "../../base-components/LoadingIcon";
 import ColorTable from "./components/SellerTable";
 import CreateAndUpdateColor from "./components/CreateAndUpdateSeller";
-import { getSellersService } from "../../services/Axios/Request/sellers";
 import { useSellers } from "../../features/sellers/hooks/useSellers";
 
 function Main() {

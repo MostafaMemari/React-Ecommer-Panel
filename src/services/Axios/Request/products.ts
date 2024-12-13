@@ -9,7 +9,6 @@ export interface Filters {
 // ProductsResponse
 
 export const getProductsService = (params: any): Promise<any> => {
-  console.log(params);
   return httpService("/products", "GET", null, params);
 };
 

@@ -12,7 +12,7 @@ export function useProducts(params: any) {
   return useQuery<any, Error>({
     queryKey: ["products"],
     queryFn: fetchProducts,
-    enabled: !!params,
+    enabled: false,
     refetchOnWindowFocus: false,
   });
 }
@@ -23,7 +23,7 @@ export function usePurchaseProducts(params: any) {
   return useQuery<any, Error>({
     queryKey: ["purchase-products"],
     queryFn: fetchProducts,
-    enabled: !!params,
+    enabled: false,
     refetchOnWindowFocus: false,
   });
 }
@@ -33,7 +33,7 @@ export function useSaleProducts(params: any) {
   return useQuery<any, Error>({
     queryKey: ["sale-products"],
     queryFn: fetchProducts,
-    enabled: !!params,
+    enabled: false,
     refetchOnWindowFocus: false,
   });
 }
@@ -43,7 +43,7 @@ export function useSettingProducts(params: any) {
   return useQuery<any, Error>({
     queryKey: ["settings-products"],
     queryFn: fetchProducts,
-    enabled: !!params,
+    enabled: false,
     refetchOnWindowFocus: false,
   });
 }

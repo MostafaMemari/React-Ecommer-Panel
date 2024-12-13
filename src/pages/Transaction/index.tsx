@@ -19,7 +19,6 @@ function Main() {
   const { data, isLoading, isFetching, error, refetch } = useTransactions({ page, limit, search });
 
   useEffect(() => {
-    updatePage(1);
     refetch();
   }, [page, limit, search]);
 
