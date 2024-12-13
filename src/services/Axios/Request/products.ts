@@ -19,27 +19,12 @@ export const removeProductsService = (productId: number): Promise<any> => {
 };
 
 //* Product Report
-export const getReportSaleProductsService = (page: number, limit: number, search: string, filters: Filters = {}): Promise<any> => {
-  const filterParams = new URLSearchParams({
-    page: page.toString(),
-    limit: limit.toString(),
-    search,
-    ...Object.fromEntries(Object.entries(filters).filter(([_, value]) => value != null)),
-  }).toString();
-
-  const url = `/products/sale?${filterParams}`;
-  return httpService(url, "get");
+export const getReportSaleProductsService = (params: any): Promise<any> => {
+  return httpService("/products/sale", "GET", null, params);
 };
 
-export const getReportPurchaseProductsService = (page: number, limit: number, search: string, filters: Filters = {}): Promise<any> => {
-  const validFilters = Object.fromEntries(Object.entries(filters).filter(([_, value]) => value != null));
-
-  const filterParams = new URLSearchParams(validFilters as Record<string, string>).toString();
-
-  const url = `/products/purchase?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}${
-    filterParams ? `&${filterParams}` : ""
-  }`;
-  return httpService(url, "get");
+export const getReportPurchaseProductsService = (params: any): Promise<any> => {
+  return httpService("/products/purchase", "GET", null, params);
 };
 
 // Create Product Service
