@@ -8,17 +8,8 @@ export interface Filters {
 
 // ProductsResponse
 
-export const getProductsService = (
-  page: number = 1,
-  limit: number = 10,
-  filters: FiltersProduct = {}
-): Promise<any> => {
-  const params = {
-    page,
-    limit,
-    ...filters,
-  };
-
+export const getProductsService = (params: any): Promise<any> => {
+  console.log(params);
   return httpService("/products", "GET", null, params);
 };
 
@@ -28,12 +19,7 @@ export const removeProductsService = (productId: number): Promise<any> => {
 };
 
 //* Product Report
-export const getReportSaleProductsService = (
-  page: number,
-  limit: number,
-  search: string,
-  filters: Filters = {}
-): Promise<any> => {
+export const getReportSaleProductsService = (page: number, limit: number, search: string, filters: Filters = {}): Promise<any> => {
   const filterParams = new URLSearchParams({
     page: page.toString(),
     limit: limit.toString(),
@@ -45,12 +31,7 @@ export const getReportSaleProductsService = (
   return httpService(url, "get");
 };
 
-export const getReportPurchaseProductsService = (
-  page: number,
-  limit: number,
-  search: string,
-  filters: Filters = {}
-): Promise<any> => {
+export const getReportPurchaseProductsService = (page: number, limit: number, search: string, filters: Filters = {}): Promise<any> => {
   const validFilters = Object.fromEntries(Object.entries(filters).filter(([_, value]) => value != null));
 
   const filterParams = new URLSearchParams(validFilters as Record<string, string>).toString();

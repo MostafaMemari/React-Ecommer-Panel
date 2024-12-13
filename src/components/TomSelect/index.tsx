@@ -9,13 +9,7 @@ interface TomSelectBoxProps {
   loading: boolean;
 }
 
-const TomSelectBox: React.FC<TomSelectBoxProps> = ({
-  options,
-  value,
-  onChange,
-  loading,
-  placeholder = "لطفا انتخاب کنید",
-}) => {
+const TomSelectBox: React.FC<TomSelectBoxProps> = ({ options, value, onChange, loading, placeholder = "لطفا انتخاب کنید" }) => {
   const handleChange = (newValue: string) => {
     onChange(newValue);
   };
@@ -36,7 +30,7 @@ const TomSelectBox: React.FC<TomSelectBoxProps> = ({
           {options.map((option) => (
             <>
               {/* {console.log(option)} */}
-              <option key={option.id} value={option.name}>
+              <option key={option.id} value={option.id}>
                 {option.name}
               </option>
             </>

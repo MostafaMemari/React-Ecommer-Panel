@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import Button from "../../base-components/Button";
 import Table from "../../base-components/Table";
 import ProductTable from "./components/ProductTable";
-import { useFetchData } from "../../hooks/useFetchData";
-import { getProductsService } from "../../services/Axios/Request/products";
+
 import { Toast } from "../../base-components/Toast";
 import Pagination from "../../components/Pagination/Pagination";
 import SearchInput from "../../base-components/SearchInput";
@@ -14,63 +13,42 @@ import LoadingIcon from "../../base-components/LoadingIcon";
 import CreateAndUpdateProductModal from "../../components/ProductFormModal";
 import usePagination from "../../hooks/usePagination";
 import { FiltersProduct } from "../../features/product/types/type";
-import TomSelect from "../../base-components/TomSelect";
-import useOptionsData from "../../hooks/useOptionsData";
-import { getCategoriesService } from "../../services/Axios/Request/categories";
-import { getColorsService } from "../../services/Axios/Request/colors";
-import { getSellersService } from "../../services/Axios/Request/sellers";
 
-import TomSelectCategory from "../../components/TomSelect";
-import TomSelectColor from "../../components/TomSelect";
-import TomSelectSeller from "../../components/TomSelect";
-import { FormInput } from "../../base-components/Form";
 import Filters from "../../components/FiltersProduct";
 import { useProducts } from "../../features/product/hooks/useProducts";
 
 function Main() {
   const { page, limit, search, updatePage, updateLimit, updateSearch } = usePagination();
-
+  const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
   const [filters, setFilters] = useState<FiltersProduct>({});
 
-  const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
-
-  const { data, isLoading, error, refetch } = useProducts();
+  const { data, isLoading, isFetching, error, refetch } = useProducts({ page, limit, search, ...filters });
 
   useEffect(() => {
-    if (!isLoading && error) {
+    updatePage(1);
+    refetch();
+  }, [page, limit, search, filters]);
+
+  useEffect(() => {
+    if (error) {
       Toast("دریافت اطلاعات با خطا مواجه شد", "error");
     }
-  }, [isLoading, error]);
-
-  const handlePageChange = (newPage: number) => {
-    updatePage(newPage);
-    refetch();
-  };
-
-  const handleLimitChange = (newLimit: number) => {
-    updateLimit(newLimit);
-    refetch();
-  };
+  }, [error]);
 
   const handleSearch = (searchValue: string) => {
-    if (searchValue === search) return;
-    updateSearch(searchValue);
-    refetch();
+    if (searchValue !== search) updateSearch(searchValue);
   };
 
   const handleFilterUpdate = (filterKey: keyof FiltersProduct, value: string | number) => {
-    setFilters((prevFilters) => ({ ...prevFilters, [filterKey]: value }));
-    refetch();
+    setFilters((prev) => ({ ...prev, [filterKey]: value }));
   };
+
+  const handlePageChange = updatePage;
+  const handleLimitChange = updateLimit;
 
   const handleProductSubmission = () => {
-    refetch();
+    updatePage(1);
   };
-
-  const start = (page - 1) * limit + 1;
-  const end = Math.min(page * limit, data?.pagination?.totalCount || 0);
-  const total = data?.pagination?.totalCount || 0;
-
   return (
     <>
       <h2 className="mt-10 text-lg font-medium intro-y">لیست محصولات</h2>
@@ -80,13 +58,10 @@ function Main() {
             ثبت محصول جدید
           </Button>
           {isOpenCreateModal && (
-            <CreateAndUpdateProductModal
-              onSuccess={handleProductSubmission}
-              onClose={() => setIsOpenCreateModal(false)}
-            />
+            <CreateAndUpdateProductModal onSuccess={handleProductSubmission} onClose={() => setIsOpenCreateModal(false)} />
           )}
 
-          {(!isLoading && data?.products && <DataSummary start={start} end={end} total={total} />) || (
+          {((!isLoading || !isFetching) && data?.products && <DataSummary pagination={data.pagination} />) || (
             <div className="hidden mx-auto md:block text-slate-500"></div>
           )}
 
@@ -99,7 +74,7 @@ function Main() {
 
         <div className="col-span-12 overflow-auto intro-y lg:overflow-visible">
           <Table className="border-spacing-y-[10px] border-separate -mt-2 text-start">
-            {isLoading ? (
+            {isLoading || isFetching ? (
               <div className="flex items-center justify-center h-[300px]">
                 <div className="flex flex-col items-center">
                   <LoadingIcon icon="puff" className="w-12 h-12" />
@@ -114,7 +89,7 @@ function Main() {
           </Table>
         </div>
 
-        {isLoading ? null : data?.products ? (
+        {isLoading || isFetching ? null : data?.products ? (
           <Pagination
             page={page}
             limit={limit}
