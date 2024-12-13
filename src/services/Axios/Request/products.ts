@@ -98,6 +98,6 @@ export const updateProductSetting = async (productId: number, values: any): Prom
   return httpService(`/products/${productId}/settings`, "patch", payload);
 };
 
-export const getSettingProductsService = (page: number, limit: number, search: string): Promise<any> => {
-  return httpService(`/products/setting?page=${page}&limit=${limit}&search=${search}`, "get");
+export const getSettingProductsService = (params: any): Promise<any> => {
+  return httpService("/products/setting", "GET", null, params);
 };
