@@ -9,21 +9,18 @@ import LoadingIcon from "../../base-components/LoadingIcon";
 import ColorTable from "./components/SellerTable";
 import CreateAndUpdateColor from "./components/CreateAndUpdateSeller";
 import { getSellersService } from "../../services/Axios/Request/sellers";
+import { useSellers } from "../../features/sellers/hooks/useSellers";
 
 function Main() {
-  const { data, loading, refetch } = useFetchData(getSellersService);
-
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
 
-  const handleProductSubmission = () => {
-    refetch([]);
-  };
+  const { data, isLoading, isFetching, error, refetch } = useSellers();
 
   useEffect(() => {
-    if (!loading && !data?.data) {
+    if (error) {
       Toast("دریافت اطلاعات با خطا مواجه شد", "error");
     }
-  }, [loading, data]);
+  }, [error]);
 
   return (
     <>
@@ -33,30 +30,28 @@ function Main() {
           <Button variant="primary" onClick={() => setIsOpenCreateModal(true)}>
             ثبت فروشنده جدید
           </Button>
-          {isOpenCreateModal && (
-            <CreateAndUpdateColor onSuccess={handleProductSubmission} onClose={() => setIsOpenCreateModal(false)} />
-          )}
+          {isOpenCreateModal && <CreateAndUpdateColor onSuccess={refetch} onClose={() => setIsOpenCreateModal(false)} />}
         </div>
       </div>
       <div className="grid grid-cols-12 gap-6 mt-5">
         <div className="col-span-12 overflow-auto intro-y lg:overflow-visible">
           <Table className="border-spacing-y-[10px] border-separate -mt-2 text-start">
-            {loading ? (
+            {isLoading || isFetching ? (
               <div className="flex items-center justify-center h-[300px]">
                 <div className="flex flex-col items-center">
                   <LoadingIcon icon="puff" className="w-12 h-12" />
                   <div className="mt-2 text-sm text-center text-gray-500">در حال بارگذاری...</div>
                 </div>
               </div>
-            ) : data?.data ? (
+            ) : data ? (
               <ColorTable
-                sellers={data?.data}
+                sellers={data}
                 onSuccess={() => {
                   refetch();
                 }}
               />
             ) : (
-              <h2 className="text-center">هیچ رنگی یافت نشد</h2>
+              <h2 className="text-center">هیچ فروشنده ای یافت نشد</h2>
             )}
           </Table>
         </div>

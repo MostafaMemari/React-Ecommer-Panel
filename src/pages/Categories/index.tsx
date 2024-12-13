@@ -9,22 +9,18 @@ import LoadingIcon from "../../base-components/LoadingIcon";
 import ColorTable from "./components/CategoryTable";
 import CreateAndUpdateColor from "./components/CreateAndUpdateColor";
 import { getCategoriesService } from "../../services/Axios/Request/categories";
+import { useCategories } from "../../features/categories/hooks/useCategories";
 
 function Main() {
-  const { data, loading, refetch } = useFetchData(getCategoriesService);
-
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
 
-  const handleProductSubmission = () => {
-    refetch(true);
-  };
+  const { data, isLoading, isFetching, error, refetch } = useCategories();
 
   useEffect(() => {
-    if (!loading && !data?.data) {
+    if (error) {
       Toast("دریافت اطلاعات با خطا مواجه شد", "error");
     }
-  }, [loading, data]);
-
+  }, [error]);
   return (
     <>
       <div className="flex flex-wrap items-center justify-between col-span-12 intro-y sm:flex-nowrap mt-10">
@@ -33,24 +29,22 @@ function Main() {
           <Button variant="primary" onClick={() => setIsOpenCreateModal(true)}>
             ثبت دسته جدید
           </Button>
-          {isOpenCreateModal && (
-            <CreateAndUpdateColor onSuccess={handleProductSubmission} onClose={() => setIsOpenCreateModal(false)} />
-          )}
+          {isOpenCreateModal && <CreateAndUpdateColor onSuccess={refetch} onClose={() => setIsOpenCreateModal(false)} />}
         </div>
       </div>
       <div className="grid grid-cols-12 gap-6 mt-5">
         <div className="col-span-12 overflow-auto intro-y lg:overflow-visible">
           <Table className="border-spacing-y-[10px] border-separate -mt-2 text-start">
-            {loading ? (
+            {isLoading || isFetching ? (
               <div className="flex items-center justify-center h-[300px]">
                 <div className="flex flex-col items-center">
                   <LoadingIcon icon="puff" className="w-12 h-12" />
                   <div className="mt-2 text-sm text-center text-gray-500">در حال بارگذاری...</div>
                 </div>
               </div>
-            ) : data?.data ? (
+            ) : data ? (
               <ColorTable
-                categories={data?.data}
+                categories={data}
                 onSuccess={() => {
                   refetch();
                 }}
