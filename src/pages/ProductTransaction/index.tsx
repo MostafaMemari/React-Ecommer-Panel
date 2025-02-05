@@ -53,8 +53,18 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
   const handlePageChange = updatePage;
   const handleLimitChange = updateLimit;
 
+  const resetSearch = () => {
+    if (searchInputRef.current) {
+      searchInputRef.current.clearAndFocus();
+    }
+  };
+
   const handleProductSubmission = () => {
-    updatePage(1);
+    if (search === "" && page === 1) {
+      refetch();
+    } else {
+      updatePage(1);
+    }
   };
   return (
     <>
@@ -84,7 +94,7 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
               </div>
             ) : data?.products ? (
               <ProductCard
-                resetSearch={refetch}
+                resetSearch={resetSearch}
                 onSuccess={handleProductSubmission}
                 products={data?.products}
                 transactionType={transactionType}

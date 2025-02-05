@@ -1,10 +1,27 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, UseMutationResult, useQuery } from "@tanstack/react-query";
 import {
   getProductsService,
   getReportPurchaseProductsService,
   getReportSaleProductsService,
   getSettingProductsService,
 } from "../../../services/Axios/Request/products";
+import { transactionsProductService } from "../../../services/Axios/Request/transactions";
+import { Toast } from "../../../base-components/Toast";
+import { AxiosResponse } from "axios";
+import { TransactionType } from "../../transaction/types/enym";
+
+// تعریف تایپ‌های ورودی و خروجی
+interface TransactionVariables {
+  productId: number;
+  transactionType: TransactionType;
+  quantity: number;
+}
+
+interface TransactionResult {
+  status: number;
+  message: string;
+  data?: any;
+}
 
 export function useProducts(params: any) {
   const fetchProducts = () => getProductsService(params).then((res) => res.data);

@@ -17,9 +17,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ products, onSuccess, transactionType, resetSearch }) => {
   const transactionLabel = transactionType === TransactionType.PURCHASE ? "خرید" : "فروش";
 
-  const [productStates, setProductStates] = useState<Record<number, { inputValue: string; isButtonDisabled: boolean }>>(
-    {}
-  );
+  const [productStates, setProductStates] = useState<Record<number, { inputValue: string; isButtonDisabled: boolean }>>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, productId: number, stock: number) => {
     const value = e.target.value;
@@ -57,11 +55,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ products, onSuccess, transact
       });
   };
 
-  const validateInputValue = (
-    value: string | number | undefined,
-    transactionType: TransactionType,
-    stock: number
-  ): boolean => {
+  const validateInputValue = (value: string | number | undefined, transactionType: TransactionType, stock: number): boolean => {
     if (!value || isNaN(Number(value))) return false;
 
     const numericValue = Number(value);
@@ -80,10 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ products, onSuccess, transact
           const productState = productStates[product.id] || { inputValue: "", isButtonDisabled: true };
 
           return (
-            <div
-              key={product.id}
-              className="intro-y col-span-12 sm:col-span-6 lg:col-span-6 xl:col-span-4 2xl:col-span-3 3xl:col-span-2"
-            >
+            <div key={product.id} className="intro-y col-span-12 sm:col-span-6 lg:col-span-6 xl:col-span-4 2xl:col-span-3 3xl:col-span-2">
               <div className="box">
                 <div className="flex items-start px-5 pt-5 relative">
                   <div className="flex flex-col items-center w-full lg:flex-row">
