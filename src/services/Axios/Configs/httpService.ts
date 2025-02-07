@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig, Method } from "axios";
 import config from "./config.json";
-
-export const apiPath = config.offlinePath;
+export const apiPath = config.onlinePath;
 
 const httpService = async (
   url: string,
@@ -10,8 +9,9 @@ const httpService = async (
   params: Record<string, any> | null = null,
   ContentType: string = "application/json"
 ) => {
-  // const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InVzZXIiLCJpYXQiOjE3MzIxNzQzODcsImV4cCI6MTg2MzU3NDM4N30.gsYz5Af_RN7IhSa9wBk14Mh91xFFBvKIQPkosfMLL1E`;
-  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InVzZXIiLCJpYXQiOjE3MzIxNzQzODcsImV4cCI6MTg2MzU3NDM4N30.gsYz5Af_RN7IhSa9wBk14Mh91xFFBvKIQPkosfMLL1E`;
+  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+
+  const token = accessToken;
 
   const headers: Record<string, string> = {
     Authorization: token ? `Bearer ${token}` : "",
@@ -19,9 +19,7 @@ const httpService = async (
   };
 
   const sanitizedData =
-    data instanceof FormData
-      ? data
-      : Object.fromEntries(Object.entries(data || {}).filter(([_, value]) => value !== undefined));
+    data instanceof FormData ? data : Object.fromEntries(Object.entries(data || {}).filter(([_, value]) => value !== undefined));
 
   const config: AxiosRequestConfig = {
     url: `${apiPath}/api/v1${url}`,
