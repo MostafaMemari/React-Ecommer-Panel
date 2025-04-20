@@ -8,10 +8,11 @@ import Button from "../../base-components/Button";
 import clsx from "clsx";
 import { login } from "../../services/Axios/Request/auth";
 import { Toast } from "../../base-components/Toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Main() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     identifier: "",
@@ -24,7 +25,8 @@ function Main() {
     try {
       await login(formData);
       Toast("ورود با موفقیت انجام شد", "success");
-      navigate("/");
+      const from = (location.state as any)?.from || "/";
+      navigate(from);
     } catch (error: any) {
       Toast(error.response?.data?.message || "خطا در ورود به سیستم", "error");
     } finally {

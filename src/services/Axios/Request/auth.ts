@@ -21,8 +21,8 @@ interface RegisterData {
 export const login = async (data: LoginData) => {
   try {
     const response = await axios.post(`${API_URL}/login`, data);
-    if (response.data.token) {
-      Cookies.set("token", response.data.token, { expires: 7 }); // توکن برای 7 روز ذخیره می‌شود
+    if (response.data.accessToken) {
+      Cookies.set("token", response.data.accessToken, { expires: 7 }); // توکن برای 7 روز ذخیره می‌شود
     }
     return response.data;
   } catch (error) {

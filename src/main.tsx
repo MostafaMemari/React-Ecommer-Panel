@@ -6,12 +6,15 @@ import { store } from "./stores/store";
 import Router from "./router";
 import "./assets/css/app.css";
 import ReactQueryProvider from "./contexts/QueryClientProvider";
+import AuthGuard from "./components/AuthGuard";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <ReactQueryProvider>
     <BrowserRouter>
       <Provider store={store}>
-        <Router />
+        <AuthGuard>
+          <Router />
+        </AuthGuard>
       </Provider>
       <ScrollToTop />
     </BrowserRouter>
