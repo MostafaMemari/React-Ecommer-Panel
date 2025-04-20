@@ -1,7 +1,7 @@
 import { useState, Fragment } from "react";
 import Lucide from "../../base-components/Lucide";
 import logoUrl from "../../assets/images/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Breadcrumb from "../../base-components/Breadcrumb";
 import { FormInput } from "../../base-components/Form";
 import { Menu, Popover } from "../../base-components/Headless";
@@ -9,14 +9,22 @@ import fakerData from "../../utils/faker";
 import _ from "lodash";
 import clsx from "clsx";
 import { Transition } from "@headlessui/react";
+import { logout } from "../../services/Axios/Request/auth";
 
 function Main() {
+  const navigate = useNavigate();
   const [searchDropdown, setSearchDropdown] = useState(false);
+
   const showSearchDropdown = () => {
     setSearchDropdown(true);
   };
   const hideSearchDropdown = () => {
     setSearchDropdown(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
   };
 
   return (
@@ -26,18 +34,16 @@ function Main() {
         <div className="flex items-center h-full">
           {/* BEGIN: Logo */}
           <Link to="/" className="hidden -intro-x md:flex">
-            <img alt="Icewall Tailwind HTML Admin Template" className="w-6" src={logoUrl} />
-            <span className="mr-3 text-lg text-white"> Icewall </span>
-            {/* #rtl */}
+            <img alt="لوگو" className="w-6" src={logoUrl} />
+            <span className="mr-3 text-lg text-white">پنل مدیریت</span>
           </Link>
           {/* END: Logo */}
           {/* BEGIN: Breadcrumb */}
-          {/* rtl */}
           <Breadcrumb light className="h-full md:mr-10 md:pr-10 md:border-r border-white/[0.08] ml-auto -intro-x">
             <Breadcrumb.Link to="/" active={true}>
-              Dashboard
+              داشبورد
             </Breadcrumb.Link>
-            <Breadcrumb.Link to="/">Application</Breadcrumb.Link>
+            <Breadcrumb.Link to="/">برنامه</Breadcrumb.Link>
           </Breadcrumb>
           {/* END: Breadcrumb */}
           {/* BEGIN: Search */}
@@ -52,10 +58,7 @@ function Main() {
                 onBlur={hideSearchDropdown}
               />
               {/* rtl */}
-              <Lucide
-                icon="Search"
-                className="absolute inset-y-0 left-0 w-5 h-5 my-auto ml-3 text-slate-600 dark:text-slate-500"
-              />
+              <Lucide icon="Search" className="absolute inset-y-0 left-0 w-5 h-5 my-auto ml-3 text-slate-600 dark:text-slate-500" />
             </div>
             <a className="relative text-white/70 sm:hidden" href="">
               <Lucide icon="Search" className="w-5 h-5 dark:text-slate-500" />
@@ -73,55 +76,47 @@ function Main() {
               {/* #rtl */}
               <div className="absolute left-0 z-10 mt-[3px]">
                 <div className="w-[450px] p-5 box">
-                  <div className="mb-2 font-medium">Pages</div>
+                  <div className="mb-2 font-medium">صفحات</div>
                   <div className="mb-5">
                     <a href="" className="flex items-center">
                       <div className="flex items-center justify-center w-8 h-8 rounded-full bg-success/20 dark:bg-success/10 text-success">
                         <Lucide icon="Inbox" className="w-4 h-4" />
                       </div>
-                      <div className="mr-3">Mail Settings</div>
+                      <div className="mr-3">تنظیمات ایمیل</div>
                     </a>
                     <a href="" className="flex items-center mt-2">
                       <div className="flex items-center justify-center w-8 h-8 rounded-full bg-pending/10 text-pending">
                         <Lucide icon="Users" className="w-4 h-4" />
                       </div>
-                      <div className="mr-3">Users & Permissions</div>
+                      <div className="mr-3">کاربران و دسترسی‌ها</div>
                     </a>
                     <a href="" className="flex items-center mt-2">
                       <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/20 text-primary/80">
                         <Lucide icon="CreditCard" className="w-4 h-4" />
                       </div>
-                      <div className="mr-3">Transactions Report</div>
+                      <div className="mr-3">گزارش تراکنش‌ها</div>
                     </a>
                   </div>
-                  <div className="mb-2 font-medium">Users</div>
+                  <div className="mb-2 font-medium">کاربران</div>
                   <div className="mb-5">
                     {_.take(fakerData, 4).map((faker, fakerKey) => (
                       <a key={fakerKey} href="" className="flex items-center mt-2">
                         <div className="w-8 h-8 image-fit">
-                          <img
-                            alt="Midone Tailwind HTML Admin Template"
-                            className="rounded-full"
-                            src={faker.photos[0]}
-                          />
+                          <img alt="تصویر کاربر" className="rounded-full" src={faker.photos[0]} />
                         </div>
                         <div className="mr-3">{faker.users[0].name}</div>
-                        <div className="w-48 ml-auto text-xs text-right truncate text-slate-500">
-                          {faker.users[0].email}
-                        </div>
+                        <div className="w-48 ml-auto text-xs text-right truncate text-slate-500">{faker.users[0].email}</div>
                       </a>
                     ))}
                   </div>
-                  <div className="mb-2 font-medium">Products</div>
+                  <div className="mb-2 font-medium">محصولات</div>
                   {_.take(fakerData, 4).map((faker, fakerKey) => (
                     <a key={fakerKey} href="" className="flex items-center mt-2">
                       <div className="w-8 h-8 image-fit">
-                        <img alt="Midone Tailwind HTML Admin Template" className="rounded-full" src={faker.images[0]} />
+                        <img alt="تصویر محصول" className="rounded-full" src={faker.images[0]} />
                       </div>
                       <div className="mr-3">{faker.products[0].name}</div>
-                      <div className="w-48 ml-auto text-xs text-right truncate text-slate-500">
-                        {faker.products[0].category}
-                      </div>
+                      <div className="w-48 ml-auto text-xs text-right truncate text-slate-500">{faker.products[0].category}</div>
                     </a>
                   ))}
                 </div>
@@ -130,7 +125,6 @@ function Main() {
           </div>
           {/* END: Search */}
           {/* BEGIN: Notifications */}
-          {/* #rtl */}
           <Popover className="ml-4 intro-x sm:ml-6">
             <Popover.Button
               className="
@@ -141,22 +135,19 @@ function Main() {
               <Lucide icon="Bell" className="w-5 h-5 dark:text-slate-500" />
             </Popover.Button>
             <Popover.Panel className="w-[280px] sm:w-[350px] p-5 mt-2">
-              <div className="mb-5 font-medium">Notifications</div>
+              <div className="mb-5 font-medium">اعلان‌ها</div>
               {_.take(fakerData, 5).map((faker, fakerKey) => (
-                <div
-                  key={fakerKey}
-                  className={clsx(["cursor-pointer relative flex items-center", { "mt-5": fakerKey }])}
-                >
+                <div key={fakerKey} className={clsx(["cursor-pointer relative flex items-center", { "mt-5": fakerKey }])}>
                   <div className="relative flex-none w-12 h-12 ml-1 image-fit">
-                    <img alt="Midone Tailwind HTML Admin Template" className="rounded-full" src={faker.photos[0]} />
+                    <img alt="تصویر کاربر" className="rounded-full" src={faker.photos[0]} />
                     <div className="absolute bottom-0 right-0 w-3 h-3 border-2 border-white rounded-full bg-success dark:border-darkmode-600"></div>
                   </div>
-                  <div className="ml-2 overflow-hidden">
+                  <div className="mr-2 overflow-hidden">
                     <div className="flex items-center">
-                      <a href="" className="ml-5 font-medium truncate">
+                      <a href="" className="mr-5 font-medium truncate">
                         {faker.users[0].name}
                       </a>
-                      <div className="ml-auto text-xs text-slate-400 whitespace-nowrap">{faker.times[0]}</div>
+                      <div className="mr-auto text-xs text-slate-400 whitespace-nowrap">{faker.times[0]}</div>
                     </div>
                     <div className="w-full truncate text-slate-500 mt-0.5">{faker.news[0].shortContent}</div>
                   </div>
@@ -168,7 +159,7 @@ function Main() {
           {/* BEGIN: Account Menu */}
           <Menu>
             <Menu.Button className="block w-8 h-8 overflow-hidden scale-110 rounded-full shadow-lg image-fit zoom-in intro-x">
-              <img alt="Midone Tailwind HTML Admin Template" src={fakerData[9].photos[0]} />
+              <img alt="تصویر پروفایل" src={fakerData[9].photos[0]} />
             </Menu.Button>
             <Menu.Items className="w-56 mt-px relative bg-primary/80 before:block before:absolute before:bg-black before:inset-0 before:rounded-md before:z-[-1] text-white">
               <Menu.Header className="font-normal">
@@ -177,20 +168,20 @@ function Main() {
               </Menu.Header>
               <Menu.Divider className="bg-white/[0.08]" />
               <Menu.Item className="hover:bg-white/5">
-                <Lucide icon="User" className="w-4 h-4 ml-2" /> Profile
+                <Lucide icon="User" className="w-4 h-4 ml-2" /> پروفایل
               </Menu.Item>
               <Menu.Item className="hover:bg-white/5">
-                <Lucide icon="Edit" className="w-4 h-4 ml-2" /> Add Account
+                <Lucide icon="Edit" className="w-4 h-4 ml-2" /> افزودن حساب
               </Menu.Item>
               <Menu.Item className="hover:bg-white/5">
-                <Lucide icon="Lock" className="w-4 h-4 ml-2" /> Reset Password
+                <Lucide icon="Lock" className="w-4 h-4 ml-2" /> تغییر رمز عبور
               </Menu.Item>
               <Menu.Item className="hover:bg-white/5">
-                <Lucide icon="HelpCircle" className="w-4 h-4 ml-2" /> Help
+                <Lucide icon="HelpCircle" className="w-4 h-4 ml-2" /> راهنما
               </Menu.Item>
               <Menu.Divider className="bg-white/[0.08]" />
-              <Menu.Item className="hover:bg-white/5">
-                <Lucide icon="ToggleRight" className="w-4 h-4 ml-2" /> Logout
+              <Menu.Item className="hover:bg-white/5" onClick={handleLogout}>
+                <Lucide icon="ToggleRight" className="w-4 h-4 ml-2" /> خروج
               </Menu.Item>
             </Menu.Items>
           </Menu>
