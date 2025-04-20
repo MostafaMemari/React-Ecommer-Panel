@@ -49,24 +49,6 @@ function Main() {
         <MainColorSwitcher />
         <div className="container relative z-10 sm:px-10">
           <div className="block grid-cols-2 gap-4 xl:grid">
-            {/* BEGIN: Login Info */}
-            <div className="flex-col hidden min-h-screen xl:flex">
-              <a href="" className="flex items-center pt-5 -intro-x">
-                <img alt="لوگو" className="w-6" src={logoUrl} />
-                <span className="mr-3 text-lg text-white"> پنل مدیریت </span>
-              </a>
-              <div className="my-auto">
-                <img alt="تصویر" className="w-1/2 -mt-16 -intro-x" src={illustrationUrl} />
-                <div className="mt-10 text-4xl font-medium leading-tight text-white -intro-x text-right">
-                  چند کلیک تا ورود <br />
-                  به حساب کاربری شما باقی مانده است.
-                </div>
-                <div className="mt-5 text-lg text-white -intro-x text-opacity-70 dark:text-slate-400 text-right">
-                  مدیریت تمام حساب‌های تجارت الکترونیک شما در یک مکان
-                </div>
-              </div>
-            </div>
-            {/* END: Login Info */}
             {/* BEGIN: Login Form */}
             <div className="flex h-screen py-5 my-10 xl:h-auto xl:py-0 xl:my-0">
               <div className="w-full px-5 py-8 mx-auto my-auto bg-white rounded-md shadow-md xl:ml-20 dark:bg-darkmode-600 xl:bg-transparent sm:px-8 xl:p-0 xl:shadow-none sm:w-3/4 lg:w-2/4 xl:w-auto">
@@ -131,6 +113,9 @@ function Main() {
               </div>
             </div>
             {/* END: Login Form */}
+            {/* BEGIN: Login Info */}
+            <div className="flex-col hidden min-h-screen xl:flex"></div>
+            {/* END: Login Info */}
           </div>
         </div>
       </div>
