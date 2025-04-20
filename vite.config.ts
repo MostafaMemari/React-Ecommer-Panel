@@ -19,4 +19,7 @@ export default defineConfig({
       "tailwind-config": path.resolve(__dirname, "./tailwind.config.js"),
     },
   },
+  // server: {
+  //   port: 3000,
+  // },
 });

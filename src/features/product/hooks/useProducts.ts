@@ -26,6 +26,8 @@ interface TransactionResult {
 export function useProducts(params: any) {
   const fetchProducts = () => getProductsService(params).then((res) => res.data);
 
+  console.log(fetchProducts);
+
   return useQuery<any, Error>({
     queryKey: ["products"],
     queryFn: fetchProducts,
