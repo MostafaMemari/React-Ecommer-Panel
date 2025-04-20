@@ -22,12 +22,7 @@ function Main() {
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
   const [filters, setFilters] = useState<FiltersProduct>({});
 
-  console.log(page);
-  const { data, isLoading, isFetching, error, refetch } = useProducts({ page, limit, search, ...filters });
-
-  useEffect(() => {
-    refetch();
-  }, [page, limit, search, filters]);
+  const { data, isLoading, isFetching, error } = useProducts({ page, limit, search, ...filters });
 
   useEffect(() => {
     if (error) {
@@ -49,6 +44,7 @@ function Main() {
   const handleProductSubmission = () => {
     updatePage(1);
   };
+
   return (
     <>
       <h2 className="mt-10 text-lg font-medium intro-y">لیست محصولات</h2>
