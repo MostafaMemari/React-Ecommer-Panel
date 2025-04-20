@@ -17,30 +17,6 @@ export interface TopMenuState {
 const initialState: TopMenuState = {
   menu: [
     {
-      icon: "Box",
-      title: "Menu Layout",
-      subMenu: [
-        {
-          icon: "Activity",
-          pathname: "/",
-          title: "Side Menu",
-          ignore: true,
-        },
-        {
-          icon: "Activity",
-          pathname: "/simple-menu/dashboard-overview-1",
-          title: "Simple Menu",
-          ignore: true,
-        },
-        {
-          icon: "Activity",
-          pathname: "/top-menu/dashboard-overview-1",
-          title: "Top Menu",
-          ignore: true,
-        },
-      ],
-    },
-    {
       icon: "ShoppingCart",
       title: "محصولات",
       subMenu: [

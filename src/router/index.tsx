@@ -1,7 +1,5 @@
 import { useRoutes } from "react-router-dom";
 import SideMenu from "../layouts/SideMenu";
-import SimpleMenu from "../layouts/SimpleMenu";
-import TopMenu from "../layouts/TopMenu";
 import { TransactionType } from "../features/transaction/types/enym";
 
 import Login from "../pages/Login";
@@ -55,16 +53,6 @@ function Router() {
           element: <Sellers />,
         },
       ],
-    },
-    {
-      path: "/simple-menu",
-      element: <SimpleMenu />,
-      children: [],
-    },
-    {
-      path: "/top-menu",
-      element: <TopMenu />,
-      children: [],
     },
     {
       path: "/login",

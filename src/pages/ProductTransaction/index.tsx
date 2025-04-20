@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { useEffect, useRef, useState } from "react";
 import Table from "../../base-components/Table";
+import { useSearchParams } from "react-router-dom";
 
 import { Toast } from "../../base-components/Toast";
 import Pagination from "../../components/Pagination/Pagination";
@@ -21,20 +22,73 @@ interface MainProps {
 }
 
 const Main: React.FC<MainProps> = ({ transactionType }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { page, limit, search, updatePage, updateLimit, updateSearch } = usePagination();
 
   const searchInputRef = useRef<SearchInputHandle>(null);
 
-  const [filters, setFilters] = useState<FiltersProduct>({});
+  // Initialize filters from URL params
+  const [filters, setFilters] = useState<FiltersProduct>(() => {
+    const urlFilters: FiltersProduct = {};
+    searchParams.forEach((value, key) => {
+      if (key !== "page" && key !== "limit" && key !== "search") {
+        urlFilters[key as keyof FiltersProduct] = value;
+      }
+    });
+    return urlFilters;
+  });
 
   const { data, isLoading, isFetching, error, refetch } =
     transactionType === TransactionType.PURCHASE
       ? useSaleProducts({ page, limit, search, ...filters })
       : usePurchaseProducts({ page, limit, search, ...filters });
 
+  // Refetch when dependencies change
   useEffect(() => {
     refetch();
-  }, [page, limit, search, filters]);
+  }, [page, limit, search, filters, refetch]);
+
+  // Update URL when filters change
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+
+    // Update filter params
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) {
+        params.set(key, value.toString());
+      } else {
+        params.delete(key);
+      }
+    });
+
+    // Update pagination and search params
+    if (page > 1) params.set("page", page.toString());
+    else params.delete("page");
+
+    if (limit !== 10) params.set("limit", limit.toString());
+    else params.delete("limit");
+
+    if (search) params.set("search", search);
+    else params.delete("search");
+
+    setSearchParams(params);
+  }, [filters, page, limit, search]);
+
+  // Initialize page, limit, and search from URL params
+  useEffect(() => {
+    const pageParam = searchParams.get("page");
+    const limitParam = searchParams.get("limit");
+    const searchParam = searchParams.get("search");
+
+    if (pageParam) updatePage(parseInt(pageParam));
+    if (limitParam) updateLimit(parseInt(limitParam));
+    if (searchParam) {
+      updateSearch(searchParam);
+      if (searchInputRef.current) {
+        searchInputRef.current.setValue(searchParam);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (error) {
@@ -47,7 +101,16 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
   };
 
   const handleFilterUpdate = (filterKey: keyof FiltersProduct, value: string | number) => {
-    setFilters((prev) => ({ ...prev, [filterKey]: value }));
+    setFilters((prev) => {
+      const newFilters = { ...prev };
+      if (value) {
+        newFilters[filterKey] = value;
+      } else {
+        delete newFilters[filterKey];
+      }
+      return newFilters;
+    });
+    updatePage(1); // Reset to first page when filter changes
   };
 
   const handlePageChange = updatePage;
@@ -57,6 +120,7 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
     if (searchInputRef.current) {
       searchInputRef.current.clearAndFocus();
     }
+    updateSearch("");
   };
 
   const handleProductSubmission = () => {
@@ -66,6 +130,7 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
       updatePage(1);
     }
   };
+
   return (
     <>
       <div className="grid grid-cols-12 gap-6 mt-5">
@@ -76,7 +141,6 @@ const Main: React.FC<MainProps> = ({ transactionType }) => {
             <div className="hidden mx-auto md:block text-slate-500"></div>
           )}
 
-          {/* <SearchInput searchType="enter" onSearch={handleSearch} /> */}
           <SearchInput ref={searchInputRef} searchType="change" debounceDelay={300} onSearch={handleSearch} />
         </div>
         <div className="col-span-12 intro-y">

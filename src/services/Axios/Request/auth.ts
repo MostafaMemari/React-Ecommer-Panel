@@ -1,7 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { apiPath } from "../Configs/httpService";
 
-const API_URL = "https://shop-mng.liara.run/api/v1/auth";
+const API_URL = `${apiPath}/api/v1/auth`;
 
 interface LoginData {
   identifier: string;

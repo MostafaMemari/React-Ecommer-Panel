@@ -6,7 +6,7 @@ import illustrationUrl from "../../assets/images/illustration.svg";
 import { FormInput, FormCheck } from "../../base-components/Form";
 import Button from "../../base-components/Button";
 import clsx from "clsx";
-import { register } from "../../services/auth";
+import { register } from "../../services/Axios/Request/auth";
 import { Toast } from "../../base-components/Toast";
 import { useNavigate } from "react-router-dom";
 

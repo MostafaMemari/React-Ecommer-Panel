@@ -11,6 +11,7 @@ interface SearchInputProps {
 // نوع سفارشی برای ref
 export interface SearchInputHandle {
   clearAndFocus: () => void; // متد سفارشی
+  setValue: (value: string) => void;
 }
 const SearchInput = forwardRef<SearchInputHandle, SearchInputProps>(
   ({ onSearch, placeholder = "جستجو...", searchType = "enter", debounceDelay = 300 }, ref) => {
@@ -46,6 +47,9 @@ const SearchInput = forwardRef<SearchInputHandle, SearchInputProps>(
         setSearchValue(""); // پاک کردن مقدار state
         inputRef.current?.focus(); // فوکوس روی input
       },
+      setValue: (value: string) => {
+        setSearchValue(value);
+      },
     }));
 
     return (
@@ -62,9 +66,7 @@ const SearchInput = forwardRef<SearchInputHandle, SearchInputProps>(
           />
           <Lucide
             icon="Search"
-            className={`absolute inset-y-0 left-0 w-4 h-4 my-auto ml-3 cursor-pointer ${
-              searchValue ? "text-slate-700" : "text-slate-500"
-            }`}
+            className={`absolute inset-y-0 left-0 w-4 h-4 my-auto ml-3 cursor-pointer ${searchValue ? "text-slate-700" : "text-slate-500"}`}
             onClick={handleSearch}
           />
         </div>

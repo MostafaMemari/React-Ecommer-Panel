@@ -30,12 +30,6 @@ export type RelatedProduct = {
   name?: string;
 };
 
-export type FiltersProduct = {
-  categoryId?: string;
-  colorId?: string;
-  sellerId?: string;
-  minStock?: number;
-  maxStock?: number;
-  sortOrder?: "ASC" | "DESC";
-  updatedAt?: "ASC" | "DESC";
-};
+export interface FiltersProduct {
+  [key: string]: string | number | undefined;
+}
