@@ -9,21 +9,21 @@ export interface Filters {
 // ProductsResponse
 
 export const getProductsService = (params: any): Promise<any> => {
-  return httpService("/products", "GET", null, params);
+  return httpService.get("/products", { params });
 };
 
 //* remove Service
 export const removeProductsService = (productId: number): Promise<any> => {
-  return httpService(`/products/${productId}`, "delete");
+  return httpService.delete(`/products/${productId}`);
 };
 
 //* Product Report
 export const getReportSaleProductsService = (params: any): Promise<any> => {
-  return httpService("/products/sale", "GET", null, params);
+  return httpService.get("/products/sale", { params });
 };
 
 export const getReportPurchaseProductsService = (params: any): Promise<any> => {
-  return httpService("/products/purchase", "GET", null, params);
+  return httpService.get("/products/purchase", { params });
 };
 
 // Create Product Service
@@ -50,7 +50,7 @@ export const createProductService = async (values: any): Promise<any> => {
     formData.append("relatedProducts", JSON.stringify(values.relatedProducts));
   }
 
-  return httpService(`/products`, "post", formData);
+  return httpService.post("/products", formData);
 };
 
 // Update Product Service
@@ -81,7 +81,7 @@ export const updateProductService = async (productId: number, values: any): Prom
     formData.append("relatedProducts", JSON.stringify(values.relatedProducts));
   }
 
-  return httpService(`/products/${productId}`, "put", formData);
+  return httpService.put(`/products/${productId}`, formData);
 };
 
 //* Product Settings
@@ -94,9 +94,9 @@ export const updateProductSetting = async (productId: number, values: any): Prom
     is_check_price: Boolean(values.isCheckPrice),
   };
 
-  return httpService(`/products/${productId}/settings`, "patch", payload);
+  return httpService.patch(`/products/${productId}/settings`, payload);
 };
 
 export const getSettingProductsService = (params: any): Promise<any> => {
-  return httpService("/products/setting", "GET", null, params);
+  return httpService.get("/products/setting", { params });
 };

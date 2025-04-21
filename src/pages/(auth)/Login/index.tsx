@@ -1,13 +1,11 @@
 import { useState } from "react";
-import DarkModeSwitcher from "../../components/DarkModeSwitcher";
-import MainColorSwitcher from "../../components/MainColorSwitcher";
-import logoUrl from "../../assets/images/logo.svg";
-import illustrationUrl from "../../assets/images/illustration.svg";
-import { FormInput, FormCheck } from "../../base-components/Form";
-import Button from "../../base-components/Button";
+import DarkModeSwitcher from "../../../components/DarkModeSwitcher";
+import MainColorSwitcher from "../../../components/MainColorSwitcher";
+import { FormInput, FormCheck } from "../../../base-components/Form";
+import Button from "../../../base-components/Button";
 import clsx from "clsx";
-import { login } from "../../services/Axios/Request/auth";
-import { Toast } from "../../base-components/Toast";
+import { login } from "../../../services/Axios/Request/auth";
+import { Toast } from "../../../base-components/Toast";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function Main() {

@@ -1,35 +1,66 @@
-import axios, { AxiosRequestConfig, Method } from "axios";
-import config from "./config.json";
-export const apiPath = config.onlinePath;
+import axios, { AxiosInstance, AxiosError } from "axios";
+import Cookies from "js-cookie";
 
-const httpService = async (
-  url: string,
-  method: Method = "GET",
-  data: Record<string, any> | FormData | null = null,
-  params: Record<string, any> | null = null,
-  ContentType: string = "application/json"
-) => {
-  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+export const apiPath = import.meta.env.VITE_API_PATH;
 
-  const token = accessToken;
+const axiosInstance: AxiosInstance = axios.create({
+  baseURL: `${apiPath}/api/v1`,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-  const headers: Record<string, string> = {
-    Authorization: token ? `Bearer ${token}` : "",
-    "Content-Type": data instanceof FormData ? "multipart/form-data" : ContentType,
-  };
+// Request interceptor for adding auth token
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-  const sanitizedData =
-    data instanceof FormData ? data : Object.fromEntries(Object.entries(data || {}).filter(([_, value]) => value !== undefined));
+// Response interceptor for handling token refresh
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
 
-  const config: AxiosRequestConfig = {
-    url: `${apiPath}/api/v1${url}`,
-    method,
-    headers,
-    data: sanitizedData,
-    params,
-  };
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
 
-  return axios(config);
-};
+      try {
+        const refreshToken = Cookies.get("refreshToken");
+        if (!refreshToken) throw new Error("No refresh token found");
 
-export default httpService;
+        const response = await axios.post(`${apiPath}/api/v1/auth/refresh`, null, {
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        });
+
+        const { accessToken, refreshToken: newRefreshToken } = response.data;
+
+        Cookies.set("token", accessToken);
+        Cookies.set("refreshToken", newRefreshToken);
+
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        Cookies.remove("token");
+        Cookies.remove("refreshToken");
+        window.location.href = "/login";
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export default axiosInstance;

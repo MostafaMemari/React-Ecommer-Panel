@@ -2,8 +2,8 @@ import { useRoutes } from "react-router-dom";
 import SideMenu from "../layouts/SideMenu";
 import { TransactionType } from "../features/transaction/types/enym";
 
-import Login from "../pages/Login";
-import Register from "../pages/Register";
+import Login from "../pages/(auth)/Login";
+import Register from "../pages/(auth)/Register";
 import ErrorPage from "../pages/ErrorPage";
 
 import Products from "../pages/Products";

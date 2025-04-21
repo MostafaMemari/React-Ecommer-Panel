@@ -3,7 +3,7 @@ import httpService from "../Configs/httpService";
 
 //* Category Service
 export const getSellersService = (): Promise<any> => {
-  return httpService(`/sellers`, "get");
+  return httpService.get("/sellers");
 };
 
 export const createSellersService = (values: Seller): Promise<any> => {
@@ -13,11 +13,11 @@ export const createSellersService = (values: Seller): Promise<any> => {
     email: values.email ? values.email : undefined,
     phone: values.phone ? values.phone : undefined,
   };
-  return httpService(`/sellers`, "post", payload);
+  return httpService.post("/sellers", payload);
 };
 
 export const removeSellerService = (colorId: number): Promise<any> => {
-  return httpService(`/sellers/${colorId}`, "delete");
+  return httpService.delete(`/sellers/${colorId}`);
 };
 
 export const updateSellerService = (colorId: number, values: Seller): Promise<any> => {
@@ -28,5 +28,5 @@ export const updateSellerService = (colorId: number, values: Seller): Promise<an
     phone: values.phone ? values.phone : undefined,
   };
 
-  return httpService(`/sellers/${colorId}`, "put", payload);
+  return httpService.put(`/sellers/${colorId}`, payload);
 };

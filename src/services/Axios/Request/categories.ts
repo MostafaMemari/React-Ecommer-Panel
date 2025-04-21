@@ -2,17 +2,17 @@ import httpService from "../Configs/httpService";
 
 //* Category Service
 export const getCategoriesService = (): Promise<any> => {
-  return httpService(`/categories`, "get");
+  return httpService.get("/categories");
 };
 
 export const createCategoryService = (values: { name: string }): Promise<any> => {
-  return httpService(`/categories`, "post", { name: values.name });
+  return httpService.post("/categories", { name: values.name });
 };
 
 export const removeCategoryService = (colorId: number): Promise<any> => {
-  return httpService(`/categories/${colorId}`, "delete");
+  return httpService.delete(`/categories/${colorId}`);
 };
 
 export const updateCategoryService = (colorId: number, values: { name: string }): Promise<any> => {
-  return httpService(`/categories/${colorId}`, "put", { name: values.name });
+  return httpService.put(`/categories/${colorId}`, { name: values.name });
 };
