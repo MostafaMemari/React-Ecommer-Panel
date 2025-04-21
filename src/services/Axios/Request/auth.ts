@@ -63,8 +63,11 @@ export const register = async (data: RegisterData) => {
   }
 };
 
-export const logout = () => {
-  Cookies.remove("token");
-  Cookies.remove("refreshToken");
-  window.location.href = "/login";
+export const logout = async () => {
+  const response = await httpService.post(`${API_URL}/logout`);
+  if (response.status === 200) {
+    Cookies.remove("token");
+    Cookies.remove("refreshToken");
+    window.location.href = "/login";
+  }
 };

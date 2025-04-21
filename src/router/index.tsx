@@ -5,6 +5,7 @@ import { TransactionType } from "../features/transaction/types/enym";
 import Login from "../pages/(auth)/Login";
 import Register from "../pages/(auth)/Register";
 import ErrorPage from "../pages/ErrorPage";
+import GuestGuard from "../components/GuestGuard";
 
 import Products from "../pages/Products";
 import ProductsRobot from "../pages/ProductsRobot";
@@ -56,11 +57,19 @@ function Router() {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <GuestGuard>
+          <Login />
+        </GuestGuard>
+      ),
     },
     {
       path: "/register",
-      element: <Register />,
+      element: (
+        <GuestGuard>
+          <Register />
+        </GuestGuard>
+      ),
     },
     {
       path: "/error-page",
